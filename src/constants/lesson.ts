@@ -1,0 +1,12 @@
+export const LessonType = {
+  VIDEO: 'VIDEO',
+  TEXT: 'TEXT',
+}
+
+export const LessonStatus = {
+  UPLOADING: 'UPLOADING',
+  UPLOADED: 'UPLOADED',
+  UPLOADING_TO_YOUTUBE: 'UPLOADING_TO_YOUTUBE',
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+}

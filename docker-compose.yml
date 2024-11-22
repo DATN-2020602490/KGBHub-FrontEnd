@@ -1,0 +1,7 @@
+services:
+  kgb-hub-next:
+    image: kgb-hub-next
+    build: .
+    restart: always
+    ports:
+      - 3001:3001
