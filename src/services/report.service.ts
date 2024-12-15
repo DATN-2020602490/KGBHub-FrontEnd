@@ -1,27 +1,18 @@
 import http from '@/lib/http'
+import { ReportTable } from '@/models'
 
 export const reportApiRequest = {
-  revenue: (access_token: string) =>
-    http.get('/reports/total?groupBy=month', {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-      cache: 'no-store',
-    }),
+  revenue: () =>
+    http.get(
+      '/reports/total?startDate=2024-01-01T00:00:00.000Z&endDate=2024-12-04T03:20:29.444Z&groupBy=month'
+    ),
 
-  topAuthors: (access_token: string, params?: string) =>
-    http.get(`/reports/authors${params}`, {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-      cache: 'no-store',
-    }),
+  topAuthors: (params?: string) =>
+    http.get<ReportTable>(`/reports/author${params}`),
 
-  topCourses: (access_token: string) =>
-    http.get('/reports/courses/star', {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-      cache: 'no-store',
-    }),
+  topCourses: () => http.get('/reports/courses/stars'),
+
+  getSystem: (params?: string) =>
+    http.get<ReportTable>('/reports/system?' + params),
+  getAuthor: (id: string) => http.get<ReportTable>(`/reports/author/${id}`),
 }

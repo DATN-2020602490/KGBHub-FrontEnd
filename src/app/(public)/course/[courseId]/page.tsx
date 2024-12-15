@@ -1,12 +1,11 @@
 import CourseHeader from '@/app/(public)/course/_components/course-header'
-import FiveStars from '@/components/course/five-stars'
 import ListPartsAccordion from '@/components/course/list-parts-accordion'
 import { formatDuration } from '@/lib/utils'
 import { coursePublicApiRequests } from '@/services/course.service'
-import { Progress } from '@nextui-org/react'
 import { CircleCheckBig, Clock, FolderOpen, SquarePlay } from 'lucide-react'
 import CourseSidebar from '@/app/(public)/course/_components/course-sidebar'
-import RatingModal from '@/components/modals/rating-modal'
+import RateSection from '@/app/(public)/course/_components/rate-section'
+import { cookies } from 'next/headers'
 
 type Props = {
   params: {
@@ -16,13 +15,21 @@ type Props = {
 
 const page = async ({ params }: Props) => {
   const { courseId } = params
-  const { payload: courseData } = await coursePublicApiRequests.get(courseId)
+  const cookieStore = cookies()
+  const accessToken = cookieStore.get('accessToken')?.value as string
+  const { payload: courseData } = await coursePublicApiRequests.get(
+    courseId,
+    accessToken
+  )
+  // if (courseData?.isBought) {
+  //   redirect(`/learning/${courseId}?lesson=${courseData?.currentLessonId}`)
+  //   return
+  // }
   const {
     id,
     knowledgeGained,
     descriptionMD,
     parts,
-    rating,
     avgRating,
     totalDuration,
     totalLesson,
@@ -84,47 +91,7 @@ const page = async ({ params }: Props) => {
               <ListPartsAccordion data={partsData} />
             </div>
           )}
-          <div className="space-y-4">
-            <p className="text-2xl font-semibold">Ratings</p>
-            <div className="flex gap-8 w-full">
-              <div>
-                <div className="aspect-square p-8 border rounded-md space-y-1 text-center">
-                  <p className="text-6xl font-bold">
-                    {(avgRating ?? 0)?.toFixed(1)}
-                  </p>
-                  <FiveStars className="mx-auto" starRated={avgRating} />
-                  <p className="text-nowrap">Course Rating</p>
-                </div>
-                {/* <RatingCourseModal />
-                 */}
-                <RatingModal />
-              </div>
-              <div className="w-full flex flex-col justify-around">
-                {Array(5)
-                  .fill(null)
-                  .map((_, index) => (
-                    <div key={index} className="flex gap-2 items-center">
-                      <FiveStars starRated={index + 1} />
-                      <Progress
-                        classNames={{
-                          indicator: 'bg-yellow-400',
-                        }}
-                        value={
-                          (rating.filter((rate) => rate.star === index + 1)
-                            .length /
-                            rating.length) *
-                          100
-                        }
-                        className=""
-                      />
-                      <p>{`(${
-                        rating.filter((rate) => rate.star === index + 1).length
-                      })`}</p>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          </div>
+          <RateSection myRate={courseData?.myRating} />
         </div>
         <CourseSidebar data={courseData} />
       </div>

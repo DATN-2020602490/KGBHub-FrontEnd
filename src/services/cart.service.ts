@@ -1,8 +1,9 @@
 import http from '@/lib/http'
+import { Cart } from '@/models'
 
 export const cartApiRequest = {
   get: () =>
-    http.get('-public/carts', {
+    http.get<Cart>('-public/carts', {
       cache: 'no-store',
     }),
 

@@ -88,4 +88,5 @@ export type Campaign = {
   createdAt: Date
   updatedAt: Date
   deletedAt?: Date
+  isJoined?: boolean
 }

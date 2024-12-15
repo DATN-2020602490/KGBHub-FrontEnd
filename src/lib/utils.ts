@@ -4,6 +4,9 @@ import jwt from 'jsonwebtoken'
 import { UseFormSetError } from 'react-hook-form'
 import { EntityError } from '@/lib/http'
 import { toast } from 'react-toastify'
+import { sanitizeConfiguration } from '@/constants/sanitizeConfig'
+import sanitizeHtml from 'sanitize-html'
+import { urlRegex } from '@/lib/regex'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -109,4 +112,29 @@ export const isClient = () => typeof window !== 'undefined'
 
 export function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1)
+}
+
+export const sanitizer = (text: string, config?: any) =>
+  sanitizeHtml(text, config || sanitizeConfiguration)
+
+export const contentUrlFormater = (content: string) => {
+  const splitedContent = content.split(' ')
+  const formattedContent = splitedContent.map((word) => {
+    if (urlRegex.test(word)) {
+      return `<a href='${word}' target='_blank' class="hyper-link">${word}<a/>`
+    }
+    return word
+  })
+  return formattedContent.join(' ')
+}
+export function formatBytes(bytes: any, decimals = 2) {
+  if (!+bytes) return '0 Bytes'
+
+  const k = 1024
+  const dm = decimals < 0 ? 0 : decimals
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
 }

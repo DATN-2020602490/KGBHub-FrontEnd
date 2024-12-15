@@ -1,9 +1,7 @@
 'use client'
 import { Course } from '@/models'
 import { useAccountContext } from '@/contexts/account'
-import { useCart } from '@/contexts/cart'
 import { generateMediaLink } from '@/lib/utils'
-import { cartApiRequest } from '@/services/cart.service'
 import { coursePublicApiRequests } from '@/services/course.service'
 import { Button, Divider } from '@nextui-org/react'
 import { FileBadge } from 'lucide-react'
@@ -13,14 +11,21 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
 import { useBuyCourseMutation } from '@/queries/useCourse'
 import { OrderStatus } from '@/constants'
+import {
+  useAddToCartMutation,
+  useMyCart,
+  useRemoveToCartMutation,
+} from '@/queries/useCart'
 
 type Props = {
   data: Course
 }
 
 const CourseSidebar = ({ data }: Props) => {
+  const { data: cartData } = useMyCart()
   const { coursesHearted, setCoursesHearted } = useAccountContext()
-  const { setCartRefresh } = useCart()
+  const addToCartMutation = useAddToCartMutation()
+  const removeToCartMutation = useRemoveToCartMutation()
   const buyCourseMutation = useBuyCourseMutation()
   const { refresh } = useRouter()
   const { courseName, priceAmount, id, parts, thumbnailFileId } = data
@@ -33,6 +38,9 @@ const CourseSidebar = ({ data }: Props) => {
   const isBought = data?.coursesPaid?.some(
     (item) =>
       item.userId === user?.id && item.order.status === OrderStatus.SUCCESS
+  )
+  const isInMyCart = cartData?.payload.coursesOnCarts?.some(
+    (item: any) => item.courseId === id
   )
   const heartCourseToggle = async () => {
     try {
@@ -77,10 +85,21 @@ const CourseSidebar = ({ data }: Props) => {
         toast.error('You need to login to add course to cart')
         return
       }
-      const res = await cartApiRequest.add(id)
+      const res = await addToCartMutation.mutateAsync(id)
       if (res.status === 200) {
         toast.success('Added course to cart')
-        setCartRefresh((prevState: boolean) => !prevState)
+      }
+    } catch (error) {}
+  }
+  const removeToCart = async () => {
+    try {
+      if (!isAuth) {
+        toast.error('You need to login to remove course to cart')
+        return
+      }
+      const res = await removeToCartMutation.mutateAsync([id])
+      if (res.status === 200) {
+        toast.success('Added course to cart')
       }
     } catch (error) {}
   }
@@ -106,10 +125,10 @@ const CourseSidebar = ({ data }: Props) => {
       </Button>
       {!isBought && (
         <Button
-          className="w-full"
+          className="w-full disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:opacity-50"
           color="secondary"
           onClick={addToCart}
-          disabled={isBought}
+          disabled={isBought || isInMyCart}
         >
           Add to cart
         </Button>

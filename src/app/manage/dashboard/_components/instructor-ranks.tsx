@@ -1,6 +1,7 @@
 'use client'
 
 import { displayFullname, generateMediaLink } from '@/lib/utils'
+import { ReportTable } from '@/models'
 import { Avatar, Card, CardBody, Tab, Tabs } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -39,7 +40,7 @@ const items = [
 ]
 
 type Props = {
-  data: any
+  data?: ReportTable
 }
 
 const currentMonth =
@@ -53,7 +54,8 @@ export const InstructorRanks = ({ data }: Props) => {
   // const [currentTime, setCurrentTime] = React.useState<any>()
   const currentTime =
     new Date().getFullYear() + (selected === 'month' ? '-' + currentMonth : '')
-  const instructorsRank = data[currentTime]
+  const instructorsRank = data?.authorReport?.[currentTime]
+  console.log(data?.authorReport?.[currentTime])
   React.useEffect(() => {
     replace(`?topInstructorsBy=${selected}`)
     // setCurrentTime(
@@ -87,36 +89,40 @@ export const InstructorRanks = ({ data }: Props) => {
           <Tab key="year" title="Year"></Tab>
         </Tabs>
         <div className="flex flex-col gap-6 w-full">
-          {data[currentTime]?.map((item: any) => (
-            <div key={item.name} className="flex justify-between">
-              <div className="flex gap-2 items-center">
-                <div className="">
-                  <Avatar
-                    isBordered
-                    color="secondary"
-                    size="sm"
-                    src={
-                      generateMediaLink(item?.author?.avatar) ??
-                      'https://i.pravatar.cc/150?u=a042581f4e29026024d'
-                    }
-                  />
-                </div>
+          {Object.values(instructorsRank ?? [])?.map(
+            (item: any, index: number) => (
+              <div key={index} className="flex justify-between">
+                <div className="flex gap-2 items-center">
+                  <div className="">
+                    <Avatar
+                      isBordered
+                      color="secondary"
+                      size="sm"
+                      src={
+                        generateMediaLink(data?.author.avatarFileId) ??
+                        'https://i.pravatar.cc/150?u=a042581f4e29026024d'
+                      }
+                    />
+                  </div>
 
-                <span className="text-default-900 text-sm font-semibold">
-                  {displayFullname(
-                    item.author?.firstName,
-                    item.author?.lastName
-                  )}
-                </span>
+                  <span className="text-default-900 text-sm font-semibold">
+                    {displayFullname(
+                      data?.author?.firstName,
+                      data?.author?.lastName
+                    )}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-success text-sm">
+                    {item?.totalOriginalAmount + 'USD'}
+                  </span>
+                  <span className="text-default-500 text-xs">
+                    ({item?.totalOrder})
+                  </span>
+                </div>
               </div>
-              <div>
-                <span className="text-success text-sm">
-                  {item.revenue + 'USD'}
-                </span>
-                <span className="text-default-500 text-xs">({item.total})</span>
-              </div>
-            </div>
-          ))}
+            )
+          )}
         </div>
       </CardBody>
     </Card>

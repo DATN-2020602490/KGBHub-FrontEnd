@@ -1,6 +1,6 @@
-import React from "react";
+import { ComponentProps } from 'react'
 
-export const FeedbackIcon = () => {
+export const FeedbackIcon = (props: ComponentProps<'svg'>) => {
   return (
     <svg
       width="24"
@@ -8,6 +8,7 @@ export const FeedbackIcon = () => {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <path
         className="fill-default-400"
@@ -35,5 +36,5 @@ export const FeedbackIcon = () => {
         fill="#969696"
       />
     </svg>
-  );
-};
+  )
+}

@@ -15,6 +15,7 @@ export const useInteractQuery = (params: {
   const { id: postId, target_resource, limit, offset } = params
   return useQuery({
     queryKey: [QUERY_KEYS.GET_INTERACTS, postId],
+
     queryFn: () =>
       interactApiRequest.get({
         id: postId,
@@ -22,6 +23,17 @@ export const useInteractQuery = (params: {
         limit,
         offset,
       }),
+  })
+}
+
+export const useListRates = (params: {
+  courseId: string
+  limit?: number
+  offset?: number
+}) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_LIST_RATES, params.courseId],
+    queryFn: () => interactApiRequest.getRates(params),
   })
 }
 
@@ -82,6 +94,18 @@ export const useHeartMutation = () => {
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_INTERACTS, data.payload.lessonId],
+      })
+    },
+  })
+}
+
+export const useRateCourseMutation = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (body: any) => interactApiRequest.rateCourse(body),
+    onSuccess: (data: any) => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_LIST_RATES, data.payload.courseId],
       })
     },
   })

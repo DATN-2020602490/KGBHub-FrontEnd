@@ -153,7 +153,7 @@ export default function ManageCourseTable({ data }: { data: any }) {
                 width={80}
                 height={45}
                 radius="sm"
-                className="object-cover aspect-video !bg-cover !bg-center !bg-no-repeat"
+                className="object-cover aspect-video w-full !bg-cover !bg-center !bg-no-repeat shrink-0"
               />
               <span>{course.courseName}</span>
             </div>

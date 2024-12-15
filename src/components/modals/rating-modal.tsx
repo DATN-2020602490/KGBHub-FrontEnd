@@ -1,5 +1,5 @@
 'use client'
-import { useRateCourseMutation } from '@/queries/useCourse'
+import { useRateCourseMutation } from '@/queries/useInteract'
 import {
   Button,
   Modal,
@@ -23,10 +23,10 @@ const RatingModal = ({ data }: Props) => {
   const { courseId } = useParams()
   const { refresh } = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [rating, setRating] = useState<any>()
+  const [rating, setRating] = useState<any>(data?.star ?? 0)
   const [hover, setHover] = useState<any>()
   const [totalStars, setTotalStars] = useState(5)
-  const [content, setContent] = useState<string>('')
+  const [content, setContent] = useState<string>(data?.content ?? '')
   const rateCourseMutation = useRateCourseMutation()
   const handleRatingCourse = async () => {
     try {
@@ -104,6 +104,7 @@ const RatingModal = ({ data }: Props) => {
                   label="Description"
                   placeholder="Enter your description"
                   className=""
+                  value={content}
                   onChange={(e) => setContent(e.target.value)}
                 />
               </ModalBody>

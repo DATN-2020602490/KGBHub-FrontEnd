@@ -2,20 +2,24 @@ import { cn } from '@/lib/utils'
 import { Button } from '@nextui-org/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useWindowSize } from 'usehooks-ts'
 
 const Intro = () => {
+  const { width } = useWindowSize()
   return (
-    <div className="flex justify-between mb-20">
-      <div className="flex flex-col w-1/3 gap-y-8">
+    <div className="max-sm:flex-col flex justify-between w-full">
+      <div className="flex flex-col sm:w-1/3 gap-y-8 max-sm:text-center">
         <h3 className="font-bold text-4xl leading-10">
           Learn a New Skill Everyday, Anytime, and Anywhere.
         </h3>
+        {width <= 768 && <PosterWithAnimation />}
+
         <p>
           <b>1000+</b> Courses covering all tech domains for you to learn and
           explore new oppurtunities. Learn from Industry Experts and land your
           Dream Job.
         </p>
-        <div className="flex gap-8 justify-around">
+        <div className="flex flex-col sm:flex-row gap-y-4 gap-x-8 justify-around">
           <Button
             size="lg"
             color="primary"
@@ -31,8 +35,10 @@ const Intro = () => {
             color="primary"
             variant="bordered"
             className="rounded-full px-10 text-lg"
+            as={Link}
+            href="/promotions"
           >
-            How it Works
+            Get promotions
           </Button>
         </div>
         <div className="grid grid-cols-3 gap-12">
@@ -60,54 +66,7 @@ const Intro = () => {
           </div>
         </div>
       </div>
-      <div className="w-1/3">
-        <div className="flex justify-center items-center relative">
-          <Image
-            src="/images/rocket.png"
-            alt=""
-            width={0}
-            height={0}
-            sizes="100%"
-            className="absolute w-80 object-cover -top-[30%] -left-[30%] animate-floating-y-slow select-none"
-          />
-          <Image
-            src="/images/model.png"
-            alt=""
-            width={0}
-            height={0}
-            sizes="100%"
-            className="w-96 object-cover select-none"
-          />
-          <Image
-            src="/images/cup.png"
-            alt=""
-            width={0}
-            height={0}
-            sizes="100%"
-            className="absolute w-60 object-cover -bottom-[30%] -right-[10%] animate-floating-x-slow select-none"
-          />
-          <RectangleRounded
-            withBorder={false}
-            className="bottom-0 left-0 animate-floating-y-slow"
-          />
-          <RectangleRounded
-            size={32}
-            color="bg-[#F0C932]"
-            withBorder={false}
-            className="-top-[10%] left-[40%] animate-floating-x-slow"
-          />
-          <RectangleRounded
-            size={64}
-            color="bg-[#7253A4]"
-            className="top-[10%] right-[10%] animate-floating-y-slow"
-          />
-          <RectangleRounded
-            size={92}
-            color="bg-orange-500"
-            className="-bottom-[30%] left-[30%] animate-floating-x-slow"
-          />
-        </div>
-      </div>
+      {width > 768 && <PosterWithAnimation />}
     </div>
   )
 }
@@ -138,6 +97,59 @@ const RectangleRounded = ({
         {withBorder && (
           <span className="absolute w-full h-full border dark:border-white border-black -top-[10%] -right-[10%] rounded-[67%_33%_71%_29%_/_31%_68%_32%_69%]"></span>
         )}
+      </div>
+    </div>
+  )
+}
+
+const PosterWithAnimation = () => {
+  return (
+    <div className="sm:w-1/3 max-sm:scale-[0.6]">
+      <div className="flex justify-center items-center relative">
+        <Image
+          src="/images/rocket.png"
+          alt=""
+          width={0}
+          height={0}
+          sizes="100%"
+          className="absolute w-80 object-cover -top-[30%] -left-[30%] animate-floating-y-slow select-none"
+        />
+        <Image
+          src="/images/model.png"
+          alt=""
+          width={0}
+          height={0}
+          sizes="100%"
+          className="size-96 object-cover select-none aspect-square"
+        />
+        <Image
+          src="/images/cup.png"
+          alt=""
+          width={0}
+          height={0}
+          sizes="100%"
+          className="absolute w-60 object-cover -bottom-[30%] -right-[10%] animate-floating-x-slow select-none"
+        />
+        <RectangleRounded
+          withBorder={false}
+          className="bottom-0 left-0 animate-floating-y-slow"
+        />
+        <RectangleRounded
+          size={32}
+          color="bg-[#F0C932]"
+          withBorder={false}
+          className="-top-[10%] left-[40%] animate-floating-x-slow"
+        />
+        <RectangleRounded
+          size={64}
+          color="bg-[#7253A4]"
+          className="top-[10%] right-[10%] animate-floating-y-slow"
+        />
+        <RectangleRounded
+          size={92}
+          color="bg-orange-500"
+          className="-bottom-[30%] left-[30%] animate-floating-x-slow"
+        />
       </div>
     </div>
   )

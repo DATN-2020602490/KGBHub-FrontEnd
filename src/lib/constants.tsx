@@ -1,3 +1,4 @@
+import { FeedbackIcon } from '@/components/icons/feedback-icon'
 import { OrderApprove } from '@/components/icons/order-approve-icon'
 import { AccountsIcon } from '@/components/icons/sidebar/accounts-icon'
 import { SmileIcon } from '@/components/icons/sidebar/smile-icon'
@@ -28,6 +29,11 @@ export const dashboardNavigation = [
   //   icon: <LayoutDashboard size={ICON_SIDEBAR_SIZE} />,
   //   pathname: '/dashboard',
   // },
+  {
+    title: 'Campaign',
+    icon: <FeedbackIcon />,
+    pathname: '/campaigns',
+  },
   {
     title: 'My courses',
     icon: <ViewIcon />,

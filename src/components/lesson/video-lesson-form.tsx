@@ -18,7 +18,6 @@ type Props = {
 }
 
 const VideoLessonForm = ({ data, onSubmit, isReadOnly = false }: Props) => {
-  console.log('VideoLessonForm  data:', data)
   const [loading, setLoading] = useState(false)
   const { refresh } = useRouter()
   const form = useForm<LessonVideoBodyType>({

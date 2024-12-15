@@ -47,6 +47,7 @@ export const SidebarWrapper = () => {
                   isActive={pathname === '/manage/dashboard'}
                   href="/manage/dashboard"
                 />
+
                 <SidebarMenu title="Manage">
                   {dashboardNavigation.map((item, index) => (
                     <SidebarItem
@@ -91,7 +92,6 @@ export const SidebarWrapper = () => {
                 }}
               />
               <div className="-mt-1 flex-1">
-                <div className="font-bold line-clamp-1">{user.username}</div>
                 <div>
                   <div className="flex gap-2 items-center">
                     <span>{`${user.firstName ? user.firstName : ''} ${

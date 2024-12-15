@@ -5,7 +5,7 @@ const RecentCourseSection = () => {
   const { data, isLoading } = useListCoursePublic()
   const recentCourses = data?.payload?.courses
   return (
-    <div className="grid grid-cols-4 gap-4 w-full">
+    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
       {isLoading
         ? Array(8)
             .fill(null)

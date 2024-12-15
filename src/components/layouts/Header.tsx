@@ -1,5 +1,6 @@
 'use client'
 import CartPopover from '@/components/cart/cart-popover'
+import ListChatsPopover from '@/components/chat/list-chats-popover'
 import GoogleLogin from '@/components/google-login'
 import { GraduationCap } from '@/components/icons/graduation-cap'
 import { UserDropdown } from '@/components/navbar/user-dropdown'
@@ -24,6 +25,7 @@ import {
 import { ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
+import { useWindowSize } from 'usehooks-ts'
 
 const menuItems = [
   'Profile',
@@ -41,6 +43,7 @@ const menuItems = [
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { user } = useAccountContext()
+  const { width } = useWindowSize()
   const isManager = user?.roles
     ? user.roles.some(
         (role) => role.role.name === 'ADMIN' || role.role.name === 'AUTHOR'
@@ -134,7 +137,9 @@ const Header = () => {
       </NavbarContent>
 
       <NavbarContent justify="end">
-        <ThemeSwitcher />
+        {width > 640 && <ThemeSwitcher />}
+
+        <ListChatsPopover />
         {user && <CartPopover />}
         {user ? (
           <NavbarItem>
@@ -145,7 +150,7 @@ const Header = () => {
         )}
       </NavbarContent>
 
-      <NavbarMenu>
+      <NavbarMenu className="flex flex-col items-center">
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
             <Link
@@ -164,6 +169,7 @@ const Header = () => {
             </Link>
           </NavbarMenuItem>
         ))}
+        {width <= 640 && <ThemeSwitcher />}
       </NavbarMenu>
     </Navbar>
   )

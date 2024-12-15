@@ -61,6 +61,7 @@ export type Conversation = {
   createdAt: Date
   updatedAt: Date
   deletedAt?: Date
+  unreadMessages?: number
 }
 
 export type ChatMember = {

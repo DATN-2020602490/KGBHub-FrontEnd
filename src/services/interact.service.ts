@@ -1,5 +1,5 @@
 import http from '@/lib/http'
-import { Comment, TargetResourceType } from '@/models'
+import { Comment, Rating, TargetResourceType } from '@/models'
 
 export type CommentBodyType = {
   id: string
@@ -38,6 +38,28 @@ export const interactApiRequest = {
     return http.get<InteractResType>(`/interacts?${queryParams}`)
   },
 
+  getRates: ({
+    courseId,
+    limit,
+    offset,
+  }: {
+    courseId: string
+    limit?: number
+    offset?: number
+  }) => {
+    const queryParams = new URLSearchParams({
+      courseId,
+      ...(limit !== undefined && { limit: limit.toString() }),
+      ...(offset !== undefined && { offset: offset.toString() }),
+    }).toString()
+    return http.get<{
+      avgRate: number
+      general: Record<0 | 1 | 2 | 3 | 4 | 5, number>
+      rates: Rating[]
+      totalRated: number
+    }>(`/interacts/rates?${queryParams}`)
+  },
+
   heart: (body: { id: string; target_resource: string }) =>
     http.post('/interacts/comments', body),
 
@@ -50,4 +72,7 @@ export const interactApiRequest = {
 
   voteComment: (body: { commentId: string; isUp: boolean }) =>
     http.post(`/interacts/vote-comment`, body),
+
+  rateCourse: (body: { courseId: string; star: number; content: string }) =>
+    http.post('/interacts/rates', body),
 }

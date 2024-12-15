@@ -8,6 +8,7 @@ import {
   Lesson,
   Order,
   Product,
+  Rating,
   User,
 } from '@/models'
 
@@ -75,23 +76,6 @@ export type CourseDone = {
   userId: string
 }
 
-export type Rating = {
-  id: string
-
-  user: User
-  userId: string
-  course: Course
-  courseId: string
-
-  content?: string
-
-  star: number
-
-  createdAt: Date
-  updatedAt: Date
-  deletedAt?: Date
-}
-
 export type Part = {
   id: string
   partNumber: number
@@ -144,11 +128,13 @@ export type Course = {
   parts: Part[]
 
   coursesPaid: CoursesPaid[]
-  rating: Rating[]
   bookmarks: Bookmark[]
   courseDones: CourseDone[]
   coursesOnCarts: CoursesOnCarts[]
   products: Product[]
   Conversation: Conversation[]
   totalBought?: number
+  isBought?: boolean
+  currentLessonId?: string
+  myRating?: Rating
 }

@@ -9,7 +9,6 @@ import {
   ModalHeader,
   useDisclosure,
 } from '@nextui-org/react'
-import { PlusCircle } from 'lucide-react'
 import { toast } from 'react-toastify'
 
 const CreateCourseModal = () => {
@@ -26,12 +25,9 @@ const CreateCourseModal = () => {
   }
   return (
     <>
-      <div
-        className="h-full w-full flex items-center justify-center border border-dashed rounded-lg cursor-pointer aspect-square"
-        onClick={onOpen}
-      >
-        <PlusCircle size={52} />
-      </div>
+      <Button color="primary" onClick={onOpen}>
+        Create course
+      </Button>
       <Modal backdrop="blur" isOpen={isOpen} onClose={onClose}>
         <ModalContent>
           {(onClose) => (

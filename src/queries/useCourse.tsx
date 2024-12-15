@@ -2,7 +2,6 @@ import {
   BuyCourseBodyType,
   courseManagerApiRequests,
   coursePublicApiRequests,
-  RatingBodyType,
 } from '@/services/course.service'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import QUERY_KEYS from '@/constants/query-keys'
@@ -93,12 +92,6 @@ export const useDeleteCourseMutation = () => {
         queryKey: [QUERY_KEYS.GET_LIST_COURSES_MANAGER],
       })
     },
-  })
-}
-
-export const useRateCourseMutation = () => {
-  return useMutation({
-    mutationFn: (body: RatingBodyType) => coursePublicApiRequests.rating(body),
   })
 }
 

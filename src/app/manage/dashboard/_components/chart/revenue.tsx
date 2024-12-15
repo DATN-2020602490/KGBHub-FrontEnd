@@ -1,124 +1,165 @@
 'use client'
-
-import { reportApiRequest } from '@/services/report.service'
 import { format } from 'date-fns'
-import { color } from 'framer-motion'
-import React, { useEffect, useState } from 'react'
-import Chart, { Props } from 'react-apexcharts'
-
-const state: Props['series'] = [
-  {
-    name: 'Series1',
-    data: [31, 40, 28, 51, 42, 109, 100],
-  },
-  {
-    name: 'Series2',
-    data: [11, 32, 45, 32, 34, 52, 41],
-  },
-]
-
-const options: Props['options'] = {
-  chart: {
-    type: 'area',
-    animations: {
-      easing: 'linear',
-      speed: 300,
-    },
-    sparkline: {
-      enabled: false,
-    },
-    brush: {
-      enabled: false,
-    },
-    id: 'basic-bar',
-    foreColor: 'hsl(var(--nextui-default-800))',
-    stacked: true,
-    toolbar: {
-      show: false,
-    },
-    zoom: {
-      enabled: false,
-    },
-  },
-  dataLabels: {
-    enabled: false,
-  },
-  xaxis: {
-    categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
-    labels: {
-      show: true,
-      style: {
-        colors: 'hsl(var(--nextui-default-800))',
-      },
-    },
-    axisBorder: {
-      color: 'hsl(var(--nextui-nextui-default-200))',
-    },
-    axisTicks: {
-      color: 'hsl(var(--nextui-nextui-default-200))',
-    },
-  },
-  yaxis: {
-    labels: {
-      style: {
-        // hsl(var(--nextui-content1-foreground))
-        colors: 'hsl(var(--nextui-default-800))',
-      },
-    },
-  },
-  tooltip: {
-    enabled: true,
-
-    marker: {
-      show: false,
-    },
-  },
-  grid: {
-    show: true,
-    borderColor: 'hsl(var(--nextui-default-200))',
-    strokeDashArray: 0,
-    position: 'back',
-  },
-  stroke: {
-    curve: 'straight',
-  },
-  legend: {
-    horizontalAlign: 'left',
-  },
-  // @ts-ignore
-  // markers: false,
-}
+import Chart from 'react-apexcharts'
 
 type RevenueChartProps = {
   data: any
 }
 
 const RevenueChart = ({ data }: RevenueChartProps) => {
+  const months = Object.keys(data)
   const monthNames = Object.keys(data).map((key) => {
     const [year, month] = key.split('-')
     return format(new Date(parseInt(year), parseInt(month) - 1), 'MMMM')
   })
+  const totalOriginalAmounts = months.map(
+    (month) => data[month].totalOriginalAmount
+  )
+  const totalAmounts = months.map((month) => data[month].totalAmount)
+  const totalFees = months.map((month) => data[month].totalFee)
+  const totalOrders = months.map((month) => data[month].totalOrder)
+
+  const totalAmountCombined = totalOriginalAmounts.map((value, index) => [
+    value,
+    totalAmounts[index],
+  ])
+
+  const chartOptions = {
+    chart: {
+      type: 'bar',
+      stacked: true,
+      foreColor: 'hsl(var(--nextui-default-800))',
+      toolbar: {
+        show: false,
+      },
+      zoom: {
+        enabled: false,
+      },
+    },
+    grid: {
+      show: true,
+      borderColor: 'hsl(var(--nextui-default-200))',
+      strokeDashArray: 0,
+      position: 'back',
+    },
+    stroke: {
+      width: [0, 0, 0, 3],
+      curve: 'smooth',
+    },
+    plotOptions: {
+      bar: {
+        columnWidth: '50%',
+        endingShape: 'flat',
+      },
+    },
+    xaxis: {
+      categories: monthNames,
+      labels: {
+        show: true,
+        style: {
+          colors: 'hsl(var(--nextui-default-800))',
+        },
+      },
+      axisBorder: {
+        color: 'hsl(var(--nextui-nextui-default-200))',
+      },
+      axisTicks: {
+        color: 'hsl(var(--nextui-nextui-default-200))',
+      },
+    },
+    yaxis: [
+      {
+        seriesName: ['Total Original Amount', 'Total Fee', 'Total Amount'],
+        title: {
+          text: 'Amounts (USD)',
+        },
+        labels: {
+          style: {
+            // hsl(var(--nextui-content1-foreground))
+            colors: 'hsl(var(--nextui-default-800))',
+          },
+        },
+      },
+      {
+        opposite: true,
+        seriesName: 'Total Orders',
+        title: {
+          text: 'Orders',
+        },
+        min: 0,
+        max: 100,
+        labels: {
+          style: {
+            // hsl(var(--nextui-content1-foreground))
+            colors: 'hsl(var(--nextui-default-800))',
+          },
+        },
+      },
+    ],
+    tooltip: {
+      y: {
+        formatter: function (
+          // @ts-ignore
+          value: number,
+          // @ts-ignore
+          { series, seriesIndex, dataPointIndex, w }
+        ) {
+          const test = series[seriesIndex][dataPointIndex]
+          const seriesName = w.globals.seriesNames[seriesIndex]
+          if (seriesName === 'Total Original Amount') {
+            return totalOriginalAmounts[dataPointIndex]
+          }
+          return value
+        },
+      },
+    },
+
+    legend: {
+      position: 'bottom',
+      onItemClick: {
+        toggleDataSeries: false,
+      },
+      onItemHover: {
+        highlightDataSeries: false,
+      },
+    },
+  }
+
+  const chartSeries = [
+    {
+      name: 'Total Amount',
+      type: 'bar',
+      group: 'total-amount',
+      data: totalAmounts,
+    },
+    {
+      name: 'Total Original Amount',
+      type: 'bar',
+      group: 'total-amount',
+      data: totalOriginalAmounts.map((value, index) =>
+        Math.abs(value - totalAmounts[index])
+      ),
+    },
+
+    {
+      name: 'Total Fee',
+      type: 'bar',
+      data: totalFees,
+    },
+    {
+      name: 'Total Orders',
+      type: 'line',
+      data: totalOrders,
+    },
+  ]
   return (
-    <>
-      <div className="w-full z-20">
-        <div id="chart">
-          <Chart
-            options={{
-              ...options,
-              xaxis: { ...options?.xaxis, categories: monthNames },
-            }}
-            series={[
-              {
-                name: 'Revenue',
-                data: Object.values(data).map((item: any) => item.revenue),
-              },
-            ]}
-            type="area"
-            height={425}
-          />
-        </div>
-      </div>
-    </>
+    <Chart
+      // @ts-ignore
+      options={chartOptions}
+      series={chartSeries}
+      type="line"
+      height={400}
+    />
   )
 }
 

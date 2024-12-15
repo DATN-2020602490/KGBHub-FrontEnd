@@ -5,9 +5,9 @@ import { createContext, useState } from 'react'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import AccountProvider from '@/contexts/account'
-import { ToastContainer } from 'react-toastify'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ChatProvider } from '@/contexts/chat'
 interface IContext {
   initializing: boolean
 }
@@ -22,7 +22,13 @@ export default function RootProvider({
 }) {
   const [initializing, setInitializing] = useState(true)
   const router = useRouter()
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+      },
+    },
+  })
   return (
     <RootContext.Provider
       value={{
@@ -37,12 +43,7 @@ export default function RootProvider({
               clientId={process.env.NEXT_PUBLIC_CLIENT_ID as string}
             >
               <AccountProvider>
-                <ToastContainer
-                  theme="dark"
-                  hideProgressBar
-                  position="bottom-right"
-                />
-                {children}
+                <ChatProvider>{children}</ChatProvider>
               </AccountProvider>
             </GoogleOAuthProvider>
           </NextThemesProvider>

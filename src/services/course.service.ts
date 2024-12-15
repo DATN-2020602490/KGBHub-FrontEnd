@@ -55,8 +55,13 @@ export const coursePublicApiRequests = {
       cache: 'no-store',
     }),
 
-  get: (courseId: string) =>
-    http.get<Course>(`-public/courses/${courseId}`, { cache: 'no-store' }),
+  get: (courseId: string, accessToken?: string) =>
+    http.get<Course>(`-public/courses/${courseId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      cache: 'no-store',
+    }),
 
   buy: (body: BuyCourseBodyType) => http.post('/stripe/buy-course', body),
 

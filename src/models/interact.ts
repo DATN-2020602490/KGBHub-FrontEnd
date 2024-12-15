@@ -4,24 +4,6 @@ import { Course, Lesson, Message, User } from '@/models'
 export type TargetResourceType =
   (typeof TARGET_RESOURCE)[keyof typeof TARGET_RESOURCE]
 
-export type Heart = {
-  id: string
-
-  user: User
-  userId: string
-
-  lesson?: Lesson
-  lessonId?: string
-  course?: Course
-  courseId?: string
-
-  createdAt: Date
-  updatedAt: Date
-  deletedAt?: Date
-  message?: Message
-  messageId?: string
-}
-
 export type Comment = {
   id: string
   content: string
@@ -39,4 +21,38 @@ export type Comment = {
   parentId?: string
   parent?: Comment
   children: Comment[]
+}
+
+export type Heart = {
+  id: string
+
+  user: User
+  userId: string
+
+  lesson?: Lesson
+  lessonId?: string
+  course?: Course
+  courseId?: string
+
+  createdAt: Date
+  updatedAt: Date
+  deletedAt?: Date
+  message?: Message
+  messageId?: string
+}
+export type Rating = {
+  id: string
+
+  user: User
+  userId: string
+  course: Course
+  courseId: string
+
+  content?: string
+
+  star: number
+
+  createdAt: Date
+  updatedAt: Date
+  deletedAt?: Date
 }
