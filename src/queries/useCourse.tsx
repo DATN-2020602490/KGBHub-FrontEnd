@@ -29,7 +29,11 @@ export const useDetailCourse = (courseId: string) =>
 export const useDetailCoursePublic = (courseId: string) =>
   useQuery({
     queryKey: [QUERY_KEYS.GET_DETAIL_COURSE_PUBLIC, courseId],
-    queryFn: () => coursePublicApiRequests.get(courseId),
+    queryFn: () =>
+      coursePublicApiRequests.get(
+        courseId,
+        localStorage.getItem('accessToken') as string
+      ),
   })
 
 export const useCreateCourseMutation = () => {

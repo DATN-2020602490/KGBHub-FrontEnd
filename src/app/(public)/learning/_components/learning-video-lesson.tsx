@@ -5,7 +5,7 @@ import { Heading } from '@/components/common/heading'
 import { useCourse } from '@/contexts/course'
 import { generateMediaLink } from '@/lib/utils'
 import { lessonPublicApiRequest } from '@/services/lesson.service'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import React, { useEffect } from 'react'
 import { toast } from 'react-toastify'
 
@@ -15,7 +15,6 @@ type Props = {
 
 const LearningVideoLesson = ({ data }: Props) => {
   const { setCourseRefresh, progress } = useCourse()
-  const { refresh } = useRouter()
   const { courseId } = useParams()
   const [videoURL, setVideoURL] = React.useState('')
   const courseProgress = progress?.find(
@@ -26,7 +25,7 @@ const LearningVideoLesson = ({ data }: Props) => {
     ;(async function fetchLesson() {
       try {
         if (data.lessonName) {
-          const url = generateMediaLink(data.filename ?? '')
+          const url = generateMediaLink(data.videoFileId ?? '')
           const videoRes = await fetch(url, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -55,7 +54,7 @@ const LearningVideoLesson = ({ data }: Props) => {
   return (
     <div>
       <video
-        className="VideoInput_video rounded-md"
+        className="VideoInput_video rounded-md aspect-video"
         width="100%"
         height={400}
         controls

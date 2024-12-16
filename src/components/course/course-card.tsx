@@ -2,6 +2,7 @@
 import FiveStars from '@/components/course/five-stars'
 import { CATEGORIES } from '@/lib/constants'
 import { generateMediaLink } from '@/lib/utils'
+import { Course } from '@/models'
 import {
   useApproveCourseMutation,
   useDeleteCourseMutation,
@@ -17,7 +18,9 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Image,
+  Progress,
   Skeleton,
+  Tooltip,
 } from '@nextui-org/react'
 import { Ellipsis, UsersRound } from 'lucide-react'
 import Link from 'next/link'
@@ -25,7 +28,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
 
 type CourseType = {
-  data: any
+  data: Course
   isAuth?: boolean
 }
 
@@ -40,7 +43,6 @@ const CourseCard = ({ data, isAuth = false }: CourseType) => {
     courseName,
     currency,
     hearts,
-    thumbnail,
     priceAmount,
     status,
     coursesPaid,
@@ -94,6 +96,7 @@ const CourseCard = ({ data, isAuth = false }: CourseType) => {
           }
           width={0}
         />
+
         {isAuth && (
           <Chip
             color={status === 'DRAFT' ? 'default' : 'success'}
@@ -118,10 +121,12 @@ const CourseCard = ({ data, isAuth = false }: CourseType) => {
             {priceAmount ? `${priceAmount} ${currency}` : 'Free'}
           </p>
         </div>
+
         {/* <small className="text-default-500">12 Tracks</small> */}
         <h4 className="font-bold text-sm lg:text-large line-clamp-1">
           {courseName}
         </h4>
+
         <div className="flex justify-between items-center w-full text-sm">
           <FiveStars starRated={avgRating ?? 0} />
           <div className="flex gap-2 items-center">
@@ -160,6 +165,18 @@ const CourseCard = ({ data, isAuth = false }: CourseType) => {
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
+        )}
+        {data.isBought && (
+          <Tooltip content={data.process + '%'} placement="bottom">
+            <Progress
+              aria-label="Loading..."
+              className="w-full mt-2"
+              color="success"
+              // showValueLabel={true}
+              size="md"
+              value={data.process}
+            />
+          </Tooltip>
         )}
       </CardBody>
     </Card>

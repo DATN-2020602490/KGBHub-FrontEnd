@@ -4,14 +4,18 @@ import Chart from 'react-apexcharts'
 
 type RevenueChartProps = {
   data: any
+  groupBy?: string
 }
 
-const RevenueChart = ({ data }: RevenueChartProps) => {
+const RevenueChart = ({ data, groupBy = 'month' }: RevenueChartProps) => {
   const months = Object.keys(data)
-  const monthNames = Object.keys(data).map((key) => {
-    const [year, month] = key.split('-')
-    return format(new Date(parseInt(year), parseInt(month) - 1), 'MMMM')
-  })
+  const monthNames =
+    groupBy === 'month'
+      ? Object.keys(data).map((key) => {
+          const [year, month] = key.split('-')
+          return format(new Date(parseInt(year), parseInt(month) - 1), 'MMMM')
+        })
+      : undefined
   const totalOriginalAmounts = months.map(
     (month) => data[month].totalOriginalAmount
   )
@@ -53,7 +57,8 @@ const RevenueChart = ({ data }: RevenueChartProps) => {
       },
     },
     xaxis: {
-      categories: monthNames,
+      categories:
+        groupBy === 'month' ? monthNames : Object.keys(data).map((key) => key),
       labels: {
         show: true,
         style: {

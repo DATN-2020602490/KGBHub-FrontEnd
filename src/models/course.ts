@@ -137,4 +137,5 @@ export type Course = {
   isBought?: boolean
   currentLessonId?: string
   myRating?: Rating
+  process?: number
 }

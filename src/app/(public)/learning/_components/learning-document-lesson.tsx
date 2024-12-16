@@ -21,28 +21,30 @@ const LearningDocumentLesson = ({ data }: Props) => {
   )
 
   useEffect(() => {
+    const finishLessonHandler = async () => {
+      try {
+        if (
+          progress
+            ?.find((course: any) => course.courseId === courseId)
+            ?.lessons.some((l: any) => l.lessonId === data.id)
+        )
+          return null
+        const res = await lessonPublicApiRequest.finish(data.id)
+        if (res.status === 200) {
+          toast.success('Lesson finished', { hideProgressBar: true })
+          setCourseRefresh((prev: boolean) => !prev)
+        }
+      } catch (error) {}
+    }
+    const windowHeight = window.innerHeight
+    const documentHeight = document.body.clientHeight
+    if (documentHeight <= windowHeight) finishLessonHandler()
     function handleScroll() {
       if (!alertDisplayed) {
         const scrollPosition = window.scrollY
-        const windowHeight = window.innerHeight
-        const documentHeight = document.body.clientHeight
 
         if (scrollPosition > (documentHeight - windowHeight) * 0.5) {
-          ;(async () => {
-            try {
-              if (
-                progress
-                  ?.find((course: any) => course.courseId === Number(courseId))
-                  ?.lessons.some((l: any) => l.lessonId === data.id)
-              )
-                return null
-              const res = await lessonPublicApiRequest.finish(data.id)
-              if (res.status === 200) {
-                toast.success('Lesson finished', { hideProgressBar: true })
-                setCourseRefresh((prev: boolean) => !prev)
-              }
-            } catch (error) {}
-          })()
+          finishLessonHandler()
           setAlertDisplayed(true)
           window.removeEventListener('scroll', handleScroll) // Ngừng lắng nghe sự kiện scroll sau khi hiển thị alert
         }
@@ -54,7 +56,7 @@ const LearningDocumentLesson = ({ data }: Props) => {
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [JSON.stringify(progress)])
+  }, [JSON.stringify(progress), data.id])
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-4">

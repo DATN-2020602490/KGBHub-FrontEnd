@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 
 export const useReportSystem = (params: string) => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_REPORT_SYSTEM],
+    queryKey: [QUERY_KEYS.GET_REPORT_SYSTEM, params],
     queryFn: () => reportApiRequest.getSystem(params),
   })
 }

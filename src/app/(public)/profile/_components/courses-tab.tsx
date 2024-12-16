@@ -49,8 +49,8 @@ const CoursesTab = ({ profile }: Props) => {
   //   })()
   // }, [])
   return (
-    <div className={cn('', courses.length > 0 ? 'grid grid-cols-4 gap-4' : '')}>
-      {courses.length > 0 ? (
+    <div className={cn('', courses && courses.length > 0 ? 'grid grid-cols-4 gap-4' : '')}>
+      {courses && courses.length > 0 ? (
         courses.map((course: any) => (
           <CourseCard key={course.id} data={course} />
         ))

@@ -30,7 +30,7 @@ const BecomeInstructorForm = ({ data }: Props) => {
     )
   const isDisabledInput =
     differenceInDays(new Date(data?.updatedAt), new Date()) >= 15 ||
-    !!data.id ||
+    !!data?.id ||
     (!isManager ? false : true)
   const { refresh } = useRouter()
   const form = useForm<BecomeInstructorBodyType>({
