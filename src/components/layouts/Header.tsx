@@ -1,14 +1,16 @@
 'use client'
 import CartPopover from '@/components/cart/cart-popover'
-import ListChatsPopover from '@/components/chat/list-chats-popover'
 import GoogleLogin from '@/components/google-login'
+import ChatIcon from '@/components/icons/chat-icon'
 import { GraduationCap } from '@/components/icons/graduation-cap'
 import { UserDropdown } from '@/components/navbar/user-dropdown'
 import SearchCourse from '@/components/search/search-course'
 import { ThemeSwitcher } from '@/components/theme-swicher'
 import { useAccountContext } from '@/contexts/account'
+import { useChatContext } from '@/contexts/chat'
 import { CATEGORIES } from '@/lib/constants'
 import {
+  Badge,
   Button,
   Dropdown,
   DropdownItem,
@@ -44,11 +46,16 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { user } = useAccountContext()
   const { width } = useWindowSize()
+  const { chatList } = useChatContext()
   const isManager = user?.roles
     ? user.roles.some(
         (role) => role.role.name === 'ADMIN' || role.role.name === 'AUTHOR'
       )
     : false
+  const unreadMessageCount = chatList?.reduce(
+    (total, current) => (total += current?.conversation?.unreadMessages || 0),
+    0
+  )
   return (
     <Navbar
       isBordered
@@ -139,7 +146,14 @@ const Header = () => {
       <NavbarContent justify="end">
         {width > 640 && <ThemeSwitcher />}
 
-        <ListChatsPopover />
+        {/* {user && <ListChatsPopover />} */}
+        {user && (
+          <Badge color="danger" content={unreadMessageCount} shape="circle">
+            <Link href="/messages">
+              <ChatIcon className="size-6" />
+            </Link>
+          </Badge>
+        )}
         {user && <CartPopover />}
         {user ? (
           <NavbarItem>

@@ -1,10 +1,10 @@
 'use client'
 import { Course } from '@/models'
 import { useAccountContext } from '@/contexts/account'
-import { generateMediaLink } from '@/lib/utils'
+import { formatDuration, generateMediaLink } from '@/lib/utils'
 import { coursePublicApiRequests } from '@/services/course.service'
 import { Button, Divider } from '@nextui-org/react'
-import { FileBadge } from 'lucide-react'
+import { Clock, FileBadge, FolderOpen } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -16,6 +16,8 @@ import {
   useMyCart,
   useRemoveToCartMutation,
 } from '@/queries/useCart'
+import pluralize from 'pluralize'
+import { interactApiRequest } from '@/services/interact.service'
 
 type Props = {
   data: Course
@@ -28,17 +30,19 @@ const CourseSidebar = ({ data }: Props) => {
   const removeToCartMutation = useRemoveToCartMutation()
   const buyCourseMutation = useBuyCourseMutation()
   const { refresh } = useRouter()
-  const { courseName, priceAmount, id, parts, thumbnailFileId } = data
+  const { courseName, priceAmount, id, parts, thumbnailFileId, isBought, isHearted } = data
   const { user } = useAccountContext()
   const isAuth = !!user?.email
-  const isHearted =
-    coursesHearted.length > 0
-      ? coursesHearted?.some((item: any) => item.courseId === Number(id))
-      : false
-  const isBought = data?.coursesPaid?.some(
-    (item) =>
-      item.userId === user?.id && item.order.status === OrderStatus.SUCCESS
-  )
+  
+  // const isHearted =
+  //   coursesHearted.length > 0
+  //     ? coursesHearted?.some((item: any) => item.courseId === Number(id))
+  //     : false
+  // const isBought = data?.coursesPaid?.some(
+  //   (item) =>
+  //     item.userId === user?.id && item.order.status === OrderStatus.SUCCESS
+  // )
+  const totalLesson = data.totalLesson
   const isInMyCart = cartData?.payload.coursesOnCarts?.some(
     (item: any) => item.courseId === id
   )
@@ -48,7 +52,7 @@ const CourseSidebar = ({ data }: Props) => {
         toast.error('You need to login to heart course')
         return
       }
-      const res = await coursePublicApiRequests.toogleHeart(id)
+      const res = await interactApiRequest.heart({id, target_resource:"course"})
       if (res.status === 200) {
         refresh()
       }
@@ -105,7 +109,7 @@ const CourseSidebar = ({ data }: Props) => {
   }
 
   return (
-    <div className="flex-1 p-3 lg:-mt-28 ml-4 border rounded-lg bg-background h-fit space-y-2">
+    <div className="flex-1 p-3 lg:-mt-28 ml-4 border rounded-lg bg-background h-fit space-y-2 sticky top-24">
       <Image
         src={generateMediaLink(thumbnailFileId)}
         alt={courseName}
@@ -153,10 +157,22 @@ const CourseSidebar = ({ data }: Props) => {
         </Button>
       )}
       <Divider className="my-2" />
-      <ul>
-        <li className="flex gap-1">
+      <ul className="space-y-1.5">
+        <li className="flex gap-1.5">
           <FileBadge size={18} />
-          <p className="text-sm">42 lessons</p>
+          <p className="text-sm">
+            {data.totalLesson} {pluralize('lesson', data.totalLesson)}
+          </p>
+        </li>
+        <li className="flex gap-1">
+          <FolderOpen size={18} />
+          <p className="text-sm">
+            {data.totalPart} {pluralize('part', data.totalPart)}
+          </p>
+        </li>
+        <li className="flex gap-1">
+          <Clock size={18} />
+          <p className="text-sm">{formatDuration(data.totalDuration)}</p>
         </li>
       </ul>
     </div>

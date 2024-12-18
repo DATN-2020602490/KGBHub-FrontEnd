@@ -30,9 +30,14 @@ import { toast } from 'react-toastify'
 type CourseType = {
   data: Course
   isAuth?: boolean
+  showProcess?: boolean
 }
 
-const CourseCard = ({ data, isAuth = false }: CourseType) => {
+const CourseCard = ({
+  data,
+  isAuth = false,
+  showProcess = false,
+}: CourseType) => {
   const { push, refresh } = useRouter()
   const approveCourseMutation = useApproveCourseMutation()
 
@@ -166,7 +171,7 @@ const CourseCard = ({ data, isAuth = false }: CourseType) => {
             </DropdownMenu>
           </Dropdown>
         )}
-        {data.isBought && (
+        {data.isBought && showProcess && (
           <Tooltip content={data.process + '%'} placement="bottom">
             <Progress
               aria-label="Loading..."

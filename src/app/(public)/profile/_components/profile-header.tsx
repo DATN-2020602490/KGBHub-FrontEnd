@@ -6,16 +6,38 @@ import { Button, Chip } from '@nextui-org/react'
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useParams, useRouter } from 'next/navigation'
+import ChatIcon from '@/components/icons/chat-icon'
+import { useCreateConversationMutation } from '@/queries/useChat'
+import { toast } from 'react-toastify'
 
 type Props = {
   data: User
 }
 
 const ProfileHeader = ({ data }: Props) => {
+  const { userId } = useParams()
+  const { push } = useRouter()
   const { user } = useAccountContext()
+  const createConversationMutation = useCreateConversationMutation()
   const isInstructor = data.roles.some(
     (role) => role.role.name === 'ADMIN' || role.role.name === 'AUTHOR'
   )
+
+  const createConversationHandler = async () => {
+    console.log('clicked')
+    try {
+      const res = await createConversationMutation.mutateAsync({
+        userIds: [user?.id as string, userId as string],
+      })
+      if (res?.payload?.id) {
+        push(`/messages/p/${res?.payload?.id}`)
+      }
+    } catch (error) {
+      toast.error('Could not send message')
+    }
+  }
+
   return (
     <>
       <div className="flex gap-4 items-center py-8">
@@ -47,6 +69,16 @@ const ProfileHeader = ({ data }: Props) => {
           >
             Become Instructor
             <ArrowRight size={18} />
+          </Button>
+        )}
+        {user?.id !== userId && (
+          <Button
+            color="primary"
+            className="flex ml-auto items-center gap-x-2"
+            onClick={createConversationHandler}
+          >
+            <ChatIcon className="size-6" />
+            Message
           </Button>
         )}
       </div>

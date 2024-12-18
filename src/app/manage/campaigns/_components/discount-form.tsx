@@ -1,4 +1,5 @@
 import FileUpload from '@/components/input/file-upload'
+import { CampaignType } from '@/constants'
 import {
   convertObjectToFormData,
   generateMediaLink,
@@ -20,10 +21,11 @@ import {
   ModalFooter,
   ModalHeader,
   Spinner,
+  Switch,
   Textarea,
   useDisclosure,
 } from '@nextui-org/react'
-import { CalendarDays, X } from 'lucide-react'
+import { CalendarDays, X, Check } from 'lucide-react'
 import { useState } from 'react'
 import DatePicker from 'react-date-picker'
 import { Controller, useForm } from 'react-hook-form'
@@ -41,11 +43,13 @@ export default function DiscountForm({ data, onSubmit }: Props) {
       cover: data?.coverFileId ?? '',
       startAt: data?.startAt ?? '',
       endAt: data?.endAt ?? '',
+      requireJoined: data?.requireJoined ?? "true",
     },
   })
 
   const submit = async (values: any) => {
     setLoading(true)
+    values.type= CampaignType.DISCOUNT
     const formData = convertObjectToFormData(values)
     await onSubmit(formData)
     setLoading(false)
@@ -136,6 +140,25 @@ export default function DiscountForm({ data, onSubmit }: Props) {
             errorMessage={errors.description?.message}
             {...field}
           />
+        )}
+      />
+      <Controller
+        control={form.control}
+        name="requireJoined"
+        render={({ field }) => (
+          <div className="space-y-2">
+            <span className="relative text-foreground-500 after:text-danger after:ml-0.5 block">
+              Require joined
+            </span>
+            <Switch
+              isSelected={field.value}
+              size="lg"
+              color="primary"
+              startContent={<X />}
+              endContent={<Check />}
+              {...field}
+            />
+          </div>
         )}
       />
       <DiscounSetting />

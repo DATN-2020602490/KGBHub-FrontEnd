@@ -1,5 +1,5 @@
 import http from '@/lib/http'
-import { User } from '@/models'
+import { Order, User } from '@/models'
 
 export const userApiRequest = {
   getList: (params: string, access_token: string) =>
@@ -10,12 +10,7 @@ export const userApiRequest = {
       cache: 'no-store',
     }),
 
-  get: (userId: string, access_token?: string) =>
-    http.get<User>(`/users/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-    }),
+  get: (userId: string) => http.get<User>(`/users/${userId}`),
 
   verifyUser: (verifyCode: string) =>
     http.post<User>('/users/verify', { verifyCode }),
@@ -44,4 +39,32 @@ export const userApiRequest = {
     }),
 
   editForm: (body: any) => http.patch('/users/actions/forms', body),
+
+  search: (keyword: string) =>
+    http.get<User[]>(`/users/actions/user-search/${keyword}`),
+
+
+  getOrderDetail: ({
+    id
+  }: {
+    id: string
+  }) => {
+    return http.get<Order>(`/stripe/orders/${id}`)
+  },
+
+  getOrders: ({
+    limit,
+    offset,
+  }: {
+    limit?: number
+    offset?: number
+  }) => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}')
+    const queryParams = new URLSearchParams({
+      userId: user.id,
+      ...(limit !== undefined && { limit: limit.toString() }),
+      ...(offset !== undefined && { offset: offset.toString() }),
+    }).toString()
+    return http.get<Order[]>(`/stripe/orders?${queryParams}`)
+  },
 }

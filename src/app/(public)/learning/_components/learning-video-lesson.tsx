@@ -26,16 +26,9 @@ const LearningVideoLesson = ({ data }: Props) => {
       try {
         if (data.lessonName) {
           const url = generateMediaLink(data.videoFileId ?? '')
-          const videoRes = await fetch(url, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-            },
-          })
-          if (videoRes.status === 200) {
-            const blob = await videoRes.blob()
-            const videoURL = URL.createObjectURL(blob)
-            setVideoURL(videoURL)
-          }
+          const accessToken = localStorage.getItem("accessToken");
+          const videoUrlWithAuth = `${url}?token=${accessToken}`;          
+          setVideoURL(videoUrlWithAuth);
         }
       } catch (error) {}
     })()

@@ -33,7 +33,7 @@ const CoursesTab = ({ profile }: Props) => {
         const res = await userApiRequest.getCourseBought()
         if (res.status === 200) {
           const result = (res.payload as any).map((item: any) => item.course)
-          setCourses(result.courses)
+          setCourses(result)
         }
       } catch (error) {}
     }
@@ -49,10 +49,15 @@ const CoursesTab = ({ profile }: Props) => {
   //   })()
   // }, [])
   return (
-    <div className={cn('', courses && courses.length > 0 ? 'grid grid-cols-4 gap-4' : '')}>
+    <div
+      className={cn(
+        '',
+        courses && courses.length > 0 ? 'grid grid-cols-4 gap-4' : ''
+      )}
+    >
       {courses && courses.length > 0 ? (
         courses.map((course: any) => (
-          <CourseCard key={course.id} data={course} />
+          <CourseCard key={course.id} data={course} showProcess />
         ))
       ) : (
         <Empty />

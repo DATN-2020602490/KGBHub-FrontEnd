@@ -41,6 +41,7 @@ export type ProductOrder = {
   id: string
   productId: string
   product: Product
+  price: number
   quantity: number
   orderId: string
   order: Order

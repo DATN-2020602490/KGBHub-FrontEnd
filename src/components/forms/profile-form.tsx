@@ -14,9 +14,10 @@ import {
   ModalHeader,
   Radio,
   RadioGroup,
+  Switch,
   useDisclosure,
 } from '@nextui-org/react'
-import { CalendarDays, X } from 'lucide-react'
+import { CalendarDays, Check, X } from 'lucide-react'
 import DatePicker from 'react-date-picker'
 import { Controller, useForm } from 'react-hook-form'
 import FileUpload from '@/components/input/file-upload'
@@ -67,8 +68,8 @@ const ProfileForm = ({ data }: Props) => {
         toast.success(`Updated information of ${fullname}!`)
 
         if (user?.id === profileData?.id) {
-          updateUser(res.payload)
-          localStorage.setItem('user', { ...user, ...res.payload })
+          updateUser(res.payload)      
+          localStorage.setItem('user', JSON.stringify({ ...user, ...res.payload }))
         }
         refresh()
       }
@@ -187,19 +188,25 @@ const ProfileForm = ({ data }: Props) => {
                 </div>
               )}
             />
-            <Controller
-              control={form.control}
-              name="syncWithGoogle"
-              render={({ field }) => (
-                <Checkbox
-                  onChange={field.onChange}
-                  value={field.value}
-                  // defaultSelected
-                >
-                  Sync with Google
-                </Checkbox>
-              )}
+    <Controller
+        control={form.control}
+        name="syncWithGoogle"
+        render={({ field }) => (
+          <div className="space-y-2">
+            <span className="relative text-foreground-500 after:text-danger after:ml-0.5 block">
+              Sync with Google
+            </span>
+            <Switch
+              isSelected={field.value}
+              size="lg"
+              color="primary"
+              startContent={<X />}
+              endContent={<Check />}
+              {...field}
             />
+          </div>
+        )}
+      />
           </div>
         </div>
         <Button type="submit" color="primary" className="ml-auto block">

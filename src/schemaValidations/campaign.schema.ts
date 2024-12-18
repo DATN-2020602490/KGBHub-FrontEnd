@@ -21,5 +21,6 @@ export const DiscountBody = z.object({
   // courseIds: z.array(z.string()),
   startAt: z.any(),
   endAt: z.any(),
+  requireJoined: z.any(),
 })
 export type DiscountBodyType = z.infer<typeof DiscountBody>

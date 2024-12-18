@@ -67,7 +67,8 @@ export default function ChatSidebar() {
                     <Avatar
                       className="h-9 w-9 lg:h-11 lg:w-11"
                       src={generateMediaLink(
-                        chat?.conversation?.avatar || friends[0]?.user?.avatar
+                        chat?.conversation?.avatarFileId ||
+                          friends[0]?.user?.avatarFileId
                       )}
                     ></Avatar>
                   ) : (
@@ -100,9 +101,11 @@ export default function ChatSidebar() {
                           className="html-content truncate text-xs leading-4 text-text-foreground-low"
                           dangerouslySetInnerHTML={{
                             __html: sanitizer(
-                              (sender?.userId == me?.id
+                              (sender?.chatMember?.user?.id == me?.id
                                 ? `You: ${chat?.lastMessage?.content}`
-                                : chat?.lastMessage?.content) ?? ''
+                                : sender?.chatMember?.user?.firstName +
+                                  ': ' +
+                                  chat?.lastMessage?.content) ?? ''
                             ),
                           }}
                         ></div>
@@ -121,7 +124,7 @@ export default function ChatSidebar() {
                               )
                             ) : (
                               !!chat?.conversation?.unreadMessages && (
-                                <div className="rounded-full bg-background-background-high px-1.5 py-0.5 text-xs font-semibold leading-[13px]">
+                                <div className="rounded-full bg-red-600 px-1.5 py-0.5 text-xs font-semibold leading-[13px]">
                                   {chat?.conversation?.unreadMessages}
                                 </div>
                               )

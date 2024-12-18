@@ -107,17 +107,19 @@ export default function Message({
       key={data.id}
       id={`msg_${data.id}`}
       className={`msg flex items-end gap-4 [&:has([data-state=open])_.actions]:visible [&:hover_.actions]:visible ${
-        isMine ? 'flex-row-reverse' : ''
+        isMine ? 'flex-row-reverse justify-start' : ''
       }`}
     >
       <div>
         {hideInfo ? (
-          <div className="size-8"></div>
+          <div></div>
         ) : (
-          <Avatar
-            className="size-8 border-none"
-            src={generateMediaLink(sender.chatMember.user.avatar)}
-          ></Avatar>
+          !isMine && (
+            <Avatar
+              className="size-8 border-none"
+              src={generateMediaLink(sender.chatMember.user.avatar)}
+            ></Avatar>
+          )
         )}
       </div>
       <div className="relative mb-4 min-w-[250px] max-w-[70%] lg:max-w-[400px]">
@@ -142,7 +144,7 @@ export default function Message({
 
         <div
           className={`${
-            isMine ? 'bg-neutral-900' : 'bg-neutral-500'
+            isMine ? 'bg-default-200' : 'bg-default-100'
           }  relative rounded-2xl p-3`}
         >
           <div

@@ -20,7 +20,8 @@ const chatApiRequest = {
   getAttachmentsShared: (attachmentId: string) =>
     http.get(`/chats/attachments/shared-files?attachmentId=${attachmentId}`),
 
-  cretae: (body: { userIds: string[] }) => http.post('/chats', body),
+  cretae: (body: { userIds: string[] }) =>
+    http.post<Conversation>('/chats', body),
   acceptConversation: (body: { conversationId: string }) =>
     http.post('/chats/actions/accept', body),
   uploadAttachment: (body: FormData) =>

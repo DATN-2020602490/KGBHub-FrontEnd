@@ -185,7 +185,7 @@ export default function ChatInput({ taggableList }: { taggableList?: any[] }) {
     <>
       <div className="sticky bottom-0 z-10 px-4 py-3 lg:p-4">
         {targetMessageId && (
-          <div className="mb-2 flex items-center justify-between rounded-full bg-background-background-mid px-4 py-2 text-xs md:text-sm">
+          <div className="mb-2 flex items-center justify-between rounded-full bg-default-200 px-4 py-2 text-xs md:text-sm">
             <div>
               <span className="">
                 Replying to{' '}
@@ -213,11 +213,11 @@ export default function ChatInput({ taggableList }: { taggableList?: any[] }) {
           </div>
         )}
 
-        <div className="relative flex items-center gap-3 rounded-3xl bg-background-background-mid p-2 lg:rounded-[32px] lg:p-4">
+        <div className="relative flex items-center gap-3 rounded-3xl bg-default-100 p-2 lg:rounded-[32px] lg:p-4">
           <div className="self-start">
             <Dropdown>
               <DropdownTrigger>
-                <div className="grid h-5 w-5 place-items-center rounded-full bg-text-foreground-base text-sm font-semibold text-background-background-base md:h-8 md:w-8">
+                <div className="grid h-5 w-5 place-items-center rounded-full bg-default-200 text-sm font-semibold md:h-8 md:w-8 cursor-pointer">
                   <PlusIcon className="h-3 w-3 md:h-4 md:w-4" />
                 </div>
               </DropdownTrigger>
@@ -251,7 +251,7 @@ export default function ChatInput({ taggableList }: { taggableList?: any[] }) {
                           return (
                             <div
                               key={index}
-                              className="relative flex aspect-square w-full flex-col items-center justify-center gap-3 rounded-lg bg-background-background-mid [&:hover_.remove]:block"
+                              className="relative flex aspect-square w-full flex-col items-center justify-center gap-3 rounded-lg bg-default-200 [&:hover_.remove]:block"
                             >
                               <Image
                                 src={URL.createObjectURL(file)}
@@ -272,7 +272,7 @@ export default function ChatInput({ taggableList }: { taggableList?: any[] }) {
                           return (
                             <div
                               key={index}
-                              className="relative flex aspect-square w-full flex-col items-center justify-center gap-3 rounded-lg bg-background-background-mid p-3 [&:hover_.remove]:block"
+                              className="relative flex aspect-square w-full flex-col items-center justify-center gap-3 rounded-lg bg-default-200 p-3 [&:hover_.remove]:block"
                             >
                               <div className="text-xs text-text-foreground-low">
                                 {formatBytes(file.size)}
@@ -327,7 +327,7 @@ export default function ChatInput({ taggableList }: { taggableList?: any[] }) {
                 targetMessageId
                   ? 'bottom-[calc(100%+76px)]'
                   : 'bottom-[calc(100%+16px)]'
-              } z-20 w-[calc(100%-12px)] space-y-3 rounded-lg bg-background-background-mid px-4 lg:-mx-5 lg:w-full`}
+              } z-20 w-[calc(100%-12px)] space-y-3 rounded-lg bg-default-200 px-4 lg:-mx-5 lg:w-full`}
             >
               {taggableList
                 ?.filter(

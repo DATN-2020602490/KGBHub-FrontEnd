@@ -58,7 +58,7 @@ function ChatProvider({ children }: { children: React.ReactNode }) {
   const [socketLoggedIn, setSocketLoggedIn] = useState(false)
   const [chatList, setChatList] = useState<undefined | any[]>(undefined)
   const [targetMessageId, setTargetMessageId] = useState<string | null>(null)
-  const isSavedMessageRoute = pathname.includes('saved-messages')
+  const isSavedMessageRoute = pathname.includes('messages/saved')
   const [messageTemplates, setMessageTemplates] = useState<string[]>([])
   const [inboxes, setInboxes] = useState<any[]>([])
 
@@ -239,12 +239,12 @@ function ChatProvider({ children }: { children: React.ReactNode }) {
           targetMessageId?: string
         } = attachments?.length
           ? {
-              id: 'a6816dd1-3858-4449-a1f5-97283bb63c8d',
+              id: conversationId,
               content: content.trim(),
               attachments,
             }
           : {
-              id: 'a6816dd1-3858-4449-a1f5-97283bb63c8d',
+              id: conversationId,
               content: content.trim(),
             }
         if (targetMessageId) payload.targetMessageId = targetMessageId

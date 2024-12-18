@@ -9,7 +9,6 @@ import { toast } from 'react-toastify'
 export default function Page() {
   const createCampaignMutation = useCreateCampaignMutation()
   const createCampaignHandler = async (values: any) => {
-    values.type = CampaignType.VOUCHERS
     try {
       await createCampaignMutation.mutateAsync(values)
       toast.success('Created campaign successfully')

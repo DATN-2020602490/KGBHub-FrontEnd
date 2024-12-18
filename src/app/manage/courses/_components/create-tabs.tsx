@@ -27,7 +27,7 @@ const CreateTabs = ({ courseData }: Props) => {
         title={
           <div className="flex items-center space-x-2">
             <File />
-            <span>Course iformation</span>
+            <span>Course information</span>
           </div>
         }
       >

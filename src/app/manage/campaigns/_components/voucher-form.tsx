@@ -1,4 +1,5 @@
 import FileUpload from '@/components/input/file-upload'
+import { CampaignType } from '@/constants'
 import { convertObjectToFormData } from '@/lib/utils'
 import {
   VoucherBody,
@@ -32,7 +33,8 @@ export default function VoucherForm({ data, onSubmit }: Props) {
   })
 
   const submit = async (values: any) => {
-    setLoading(true)
+    setLoading(true)    
+    values.type = CampaignType.VOUCHERS
     const formData = convertObjectToFormData(values)
     await onSubmit(formData)
     setLoading(false)

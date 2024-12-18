@@ -61,7 +61,7 @@ export const interactApiRequest = {
   },
 
   heart: (body: { id: string; target_resource: string }) =>
-    http.post('/interacts/comments', body),
+    http.post('/interacts/hearts', body),
 
   comment: (body: CommentBodyType) => http.post('/interacts/comments', body),
 

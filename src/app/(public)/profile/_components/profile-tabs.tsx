@@ -10,6 +10,7 @@ import { Tab, Tabs } from '@nextui-org/react'
 import { format } from 'date-fns'
 import { Cake, CircleUserRound, Contact, Mail } from 'lucide-react'
 import React, { useEffect } from 'react'
+import OrderTab from './orders-tab'
 
 type Props = {
   data: User
@@ -51,6 +52,13 @@ const ProfileTabs = ({ data }: Props) => {
           <WishListTab />
         </Tab>
       )}
+      {
+        isMe && (
+          <Tab key="orders" title="Orders">
+          <OrderTab />
+        </Tab>
+        )
+      }
       <Tab key="setting" title={isMe ? 'Setting' : 'Information'}>
         {isMe ? (
           <ProfileForm data={data} />

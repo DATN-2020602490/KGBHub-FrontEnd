@@ -135,6 +135,7 @@ export type Course = {
   Conversation: Conversation[]
   totalBought?: number
   isBought?: boolean
+  isHearted?:boolean
   currentLessonId?: string
   myRating?: Rating
   process?: number
