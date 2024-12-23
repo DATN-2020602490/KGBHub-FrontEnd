@@ -1,13 +1,13 @@
 'use client'
 
 import { create } from 'zustand'
-import { User } from '@/models'
+import { Course, User } from '@/models'
 import { authApiRequest } from '@/services/auth.service'
 import { userApiRequest } from '@/services/user.service'
 
 interface AccountState {
   user: User | undefined | null
-  coursesBought: any[]
+  coursesBought: Course[]
   coursesHearted: any[]
   initDone: boolean
   updateUser: (data: any) => void
@@ -50,7 +50,7 @@ export const useAccountStore = create<AccountState>((set, get) => ({
       if (user?.id) {
         const res = await userApiRequest.getCourseBought()
         if (res.status === 200) {
-          set({ coursesBought: res.payload as any[] })
+          set({ coursesBought: res.payload })
         }
       }
     } catch (error) {

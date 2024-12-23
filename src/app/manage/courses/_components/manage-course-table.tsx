@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import {
   Table,
@@ -243,7 +245,7 @@ export default function ManageCourseTable({ data }: { data: any }) {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No users found'} items={sortedItems}>
+      <TableBody emptyContent={'No courses found'} items={sortedItems}>
         {(item: any) => (
           <TableRow key={item.id}>
             {(columnKey: any) => (

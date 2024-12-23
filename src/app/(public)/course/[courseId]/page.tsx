@@ -91,7 +91,10 @@ const page = async ({ params }: Props) => {
               <ListPartsAccordion data={partsData} />
             </div>
           )}
-          <RateSection myRate={courseData?.myRating} />
+          <RateSection
+            myRate={courseData?.myRating}
+            canRate={courseData?.isBought}
+          />
         </div>
         <CourseSidebar data={courseData} />
       </div>

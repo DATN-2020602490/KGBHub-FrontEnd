@@ -1,17 +1,15 @@
+'use client'
+
 import BecomeInstructorForm from '@/app/(public)/become-instructor/_components/become-instructor-form'
 import StepsBecomeInstructor from '@/app/(public)/become-instructor/_components/steps-become-instructor'
-import { userApiRequest } from '@/services/user.service'
+import { useMyUpRoleRequest } from '@/queries/useUser'
 import { Button } from '@nextui-org/react'
-import { format } from 'date-fns'
-import { cookies } from 'next/headers'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const BecomeInstructorPage = async () => {
-  const cookieStore = cookies()
-  const accessToken = cookieStore.get('accessToken')?.value as string
-  const res = accessToken ? await userApiRequest.getForm(accessToken) : null
-  const form = res ? res.payload : null
+const BecomeInstructorPage = () => {
+  const { data } = useMyUpRoleRequest()
+
   return (
     <>
       <div className="flex justify-between items-center">
@@ -44,7 +42,7 @@ const BecomeInstructorPage = async () => {
             Become Instructor Form
           </h3>
         </div>
-        <BecomeInstructorForm data={form ? (form as any)[0] : undefined} />
+        <BecomeInstructorForm data={data ? data.payload[0] : undefined} />
       </div>
     </>
   )

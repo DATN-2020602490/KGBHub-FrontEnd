@@ -259,14 +259,15 @@ export type Heart = {
 
 export type SubmitForm = {
   id: number
-  timestamp: Date
+  updatedAt: Date,
+  createdAt: Date
   user: User
   userId: number
   real_firstName: string
   real_lastName: string
-  selfie?: string
-  frontIdCard?: string
-  backIdCard?: string
+  selfieFileId?: string
+  frontIdCardFileId?: string
+  backIdCardFileId?: string
   status: FormStatus
   category?: string
   linkCV?: string

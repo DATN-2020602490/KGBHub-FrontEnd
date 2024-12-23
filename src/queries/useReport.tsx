@@ -8,3 +8,9 @@ export const useReportSystem = (params: string) => {
     queryFn: () => reportApiRequest.getSystem(params),
   })
 }
+export const useReportAuthor = (params: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_REPORT_AUTHOR, params],
+    queryFn: () => reportApiRequest.getAuthor(params),
+  })
+}

@@ -11,7 +11,7 @@ const chatApiRequest = {
       }[]
     >('/chats'),
   get: (conversationId: string, params: string) =>
-    http.get<{ chat: Conversation; messages: Message[] }>(
+    http.get<Message[], { chat: Conversation }>(
       `/chats/${conversationId}?${params}`
     ),
   getMessage: (messageId: string) => http.get(`/chats/message/${messageId}`),

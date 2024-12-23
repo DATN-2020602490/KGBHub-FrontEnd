@@ -4,7 +4,6 @@ import Message from '@/components/chat/message'
 import { useAccountContext } from '@/contexts/account'
 import { useChatContext } from '@/contexts/chat'
 import { cn } from '@/lib/utils'
-import { useUserQuery } from '@/queries/useUser'
 import { Skeleton } from '@nextui-org/react'
 import { InfoIcon, XIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
@@ -20,7 +19,6 @@ export default function Page() {
   const friend = conversation?.chatMembers?.find(
     (member: any) => member?.user?.id != user?.id
   )
-  const { data: member } = useUserQuery(friend?.user?.username)
   const conversationName =
     conversation?.conversationName ||
     `${friend?.user?.firstName || ''} ${friend?.user?.lastName || ''}`
@@ -57,7 +55,7 @@ export default function Page() {
               'relative z-10 flex h-[calc(100dvh-170px)] flex-col-reverse overflow-auto px-4 lg:px-0',
               targetMessageId
                 ? 'h-[calc(100dvh-232px)] lg:h-[calc(100dvh-224px)]'
-                : 'h-[calc(100dvh-170px)] lg:h-[calc(100dvh-160px)]'
+                : 'h-[calc(100dvh-170px)] lg:h-[calc(100dvh-224px)]'
             )}
           >
             {messages[conversationId] ? (

@@ -30,7 +30,7 @@ export default function Page() {
       </div>
       <div
         id="message_list"
-        className="flex h-[calc(100dvh-170px)] lg:h-[calc(100dvh-160px)] px-4 lg:px-0 flex-col-reverse overflow-auto relative"
+        className="flex h-[calc(100dvh-170px)] lg:h-[calc(100dvh-224px)] px-4 lg:px-0 flex-col-reverse overflow-auto relative"
       >
         {messages[conversationId] ? (
           <InfiniteScroll

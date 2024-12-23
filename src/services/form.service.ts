@@ -1,14 +1,11 @@
-import { SubmitForm } from '@/app/globals'
 import http from '@/lib/http'
+import { SubmitForm } from '@/models'
 
 export const formApiRequest = {
-  get: (formId: number) => http.get(`/forms/${formId}`),
+  get: (formId: string) => http.get<SubmitForm>(`/forms/${formId}`),
 
-  getList: (access_token: string) =>
-    http.get<SubmitForm[]>('/forms', {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
+  getList: (params: string) =>
+    http.get<SubmitForm[]>('/forms' + params, {
       cache: 'no-store',
     }),
 

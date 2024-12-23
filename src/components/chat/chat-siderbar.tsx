@@ -17,11 +17,11 @@ export default function ChatSidebar() {
     <div className="flex h-full w-full shrink-0 flex-col border-controls-border-border-base px-4 lg:w-[300px] lg:border-r lg:p-0">
       <div className="sticky top-[55px] z-10 flex shrink-0 items-center justify-between border-b border-controls-border-border-base bg-background pb-2.5 pt-4 lg:top-0 lg:px-2.5 lg:pt-6">
         <h3 className="text-lg font-semibold lg:text-xl">Chats</h3>
-        <Link href="/chat/new-chat">
+        <Link href="/messages/new-chat">
           <CircleFadingPlus className="h-6 w-6" />
         </Link>
       </div>
-      <div className="flex h-full flex-col gap-3 overflow-auto py-2.5 lg:h-[calc(100dvh-64px)] lg:gap-5 lg:px-2.5 lg:py-5">
+      <div className="flex h-full flex-col gap-3 overflow-auto py-2.5 lg:gap-5 lg:px-2.5 lg:py-5">
         {chatList ? (
           chatList.length ? (
             chatList.map((chat, index) => {
@@ -59,17 +59,22 @@ export default function ChatSidebar() {
                   className="flex w-full gap-2"
                   key={index}
                 >
-                  {friends.length == 0 ? (
+                  {chat.conversation.conversationType ===
+                  CONVERSATION_TYPE.CLOUD_SAVE ? (
                     <div className="grid h-9 w-9 place-items-center rounded-full bg-base-brand-blue text-white lg:h-11 lg:w-11">
                       <HiBookmark className="h-5 w-5" />
                     </div>
-                  ) : friends.length == 1 ? (
+                  ) : chat.conversation.conversationType ===
+                    CONVERSATION_TYPE.DM ? (
                     <Avatar
                       className="h-9 w-9 lg:h-11 lg:w-11"
-                      src={generateMediaLink(
-                        chat?.conversation?.avatarFileId ||
-                          friends[0]?.user?.avatarFileId
-                      )}
+                      src={generateMediaLink(friends[0]?.user?.avatarFileId)}
+                    ></Avatar>
+                  ) : chat.conversation.conversationType ===
+                    CONVERSATION_TYPE.COURSE_GROUP_CHAT ? (
+                    <Avatar
+                      className="h-9 w-9 lg:h-11 lg:w-11"
+                      src={generateMediaLink(chat?.conversation?.avatarFileId)}
                     ></Avatar>
                   ) : (
                     <div className="h-9 w-9 lg:h-11 lg:w-11">
@@ -101,11 +106,11 @@ export default function ChatSidebar() {
                           className="html-content truncate text-xs leading-4 text-text-foreground-low"
                           dangerouslySetInnerHTML={{
                             __html: sanitizer(
-                              (sender?.chatMember?.user?.id == me?.id
-                                ? `You: ${chat?.lastMessage?.content}`
-                                : sender?.chatMember?.user?.firstName +
-                                  ': ' +
-                                  chat?.lastMessage?.content) ?? ''
+                              sender?.chatMember?.user?.id === me?.id
+                                ? `You: ${chat?.lastMessage?.content || ''}`
+                                : `${
+                                    sender?.chatMember?.user?.firstName || ''
+                                  }: ${chat?.lastMessage?.content || ''}`
                             ),
                           }}
                         ></div>

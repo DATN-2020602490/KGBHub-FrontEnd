@@ -39,15 +39,14 @@ export const SidebarWrapper = () => {
         </Link>
         <div className="flex flex-col justify-between h-full">
           <div className={Sidebar.Body()}>
+            <SidebarItem
+              title="Dashboard"
+              icon={<HomeIcon />}
+              isActive={pathname === '/manage/dashboard'}
+              href="/manage/dashboard"
+            />
             {isAdmin ? (
               <>
-                <SidebarItem
-                  title="Dashboard"
-                  icon={<HomeIcon />}
-                  isActive={pathname === '/manage/dashboard'}
-                  href="/manage/dashboard"
-                />
-
                 <SidebarMenu title="Manage">
                   {dashboardNavigation.map((item, index) => (
                     <SidebarItem
@@ -63,10 +62,10 @@ export const SidebarWrapper = () => {
             ) : (
               <SidebarMenu title="Manage">
                 <SidebarItem
-                  isActive={pathname === '/my-courses'}
+                  isActive={pathname === '/manage/courses'}
                   title="My courses"
                   icon={<ViewIcon />}
-                  href="/my-courses"
+                  href="/manage/courses"
                 />
               </SidebarMenu>
             )}

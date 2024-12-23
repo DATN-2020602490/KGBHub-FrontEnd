@@ -10,10 +10,8 @@ export type CommentBodyType = {
 }
 
 export type InteractResType = {
-  comments: Comment[]
-  commentsCount: number
-  isHearted: boolean
-  hearsCount: number
+  data: Comment[]
+  option: { isHearted: boolean; hearsCount: number }
 }
 
 export const interactApiRequest = {
@@ -35,7 +33,9 @@ export const interactApiRequest = {
       ...(offset !== undefined && { offset: offset.toString() }),
     }).toString()
 
-    return http.get<InteractResType>(`/interacts?${queryParams}`)
+    return http.get<Comment[], { isHearted: boolean; hearsCount: number }>(
+      `/interacts?${queryParams}`
+    )
   },
 
   getRates: ({
@@ -52,12 +52,13 @@ export const interactApiRequest = {
       ...(limit !== undefined && { limit: limit.toString() }),
       ...(offset !== undefined && { offset: offset.toString() }),
     }).toString()
-    return http.get<{
-      avgRate: number
-      general: Record<0 | 1 | 2 | 3 | 4 | 5, number>
-      rates: Rating[]
-      totalRated: number
-    }>(`/interacts/rates?${queryParams}`)
+    return http.get<
+      Rating[],
+      {
+        avgRate: number
+        general: Record<0 | 1 | 2 | 3 | 4 | 5, number>
+      }
+    >(`/interacts/rates?${queryParams}`)
   },
 
   heart: (body: { id: string; target_resource: string }) =>

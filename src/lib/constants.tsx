@@ -1,7 +1,6 @@
 import { FeedbackIcon } from '@/components/icons/feedback-icon'
 import { OrderApprove } from '@/components/icons/order-approve-icon'
 import { AccountsIcon } from '@/components/icons/sidebar/accounts-icon'
-import { SmileIcon } from '@/components/icons/sidebar/smile-icon'
 import { UpgradeRole } from '@/components/icons/sidebar/updarade-role'
 import { ViewIcon } from '@/components/icons/sidebar/view-icon'
 import {
@@ -54,16 +53,6 @@ export const dashboardNavigation = [
     icon: <UpgradeRole />,
     pathname: '/forms',
   },
-  {
-    title: 'Emojis',
-    icon: <SmileIcon />,
-    pathname: '/emojis',
-  },
-  // {
-  //   title: 'Settings',
-  //   icon: <Settings size={ICON_SIDEBAR_SIZE} />,
-  //   pathname: '/settings',
-  // },
 ]
 
 export const categories = [

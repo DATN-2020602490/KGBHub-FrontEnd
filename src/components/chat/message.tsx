@@ -2,7 +2,12 @@ import { DotsIcon } from '@/components/icons/accounts/dots-icon'
 import { useAccountContext } from '@/contexts/account'
 import { useChatContext } from '@/contexts/chat'
 import { urlRegex } from '@/lib/regex'
-import { contentUrlFormater, generateMediaLink, sanitizer } from '@/lib/utils'
+import {
+  cn,
+  contentUrlFormater,
+  generateMediaLink,
+  sanitizer,
+} from '@/lib/utils'
 import chatApiRequest from '@/services/chat.service'
 import {
   Avatar,
@@ -55,13 +60,13 @@ export default function Message({
   useEffect(() => {
     const fetchMessage = async () => {
       try {
-        const res = await chatApiRequest.get(data?.targetMessageId, '')
+        const res = await chatApiRequest.getMessage(data?.targetMessageId)
         if (res.status === 200) setTargetMessage(res.payload)
       } catch (error) {
         console.error(error)
       }
     }
-    const msg: any = messages[+conversationId]?.find(
+    const msg: any = messages[conversationId as string]?.find(
       (msg) => msg.id == data?.targetMessageId
     )
     if (data?.targetMessageId) {
@@ -70,7 +75,7 @@ export default function Message({
     }
   }, [])
   const handleScrollToMessage = async () => {
-    let condition = messages[+conversationId]?.find(
+    let condition = messages[conversationId as string]?.find(
       (msg) => msg.id == data?.targetMessageId
     )
 
@@ -85,7 +90,7 @@ export default function Message({
         top: msgList.scrollTop - msgList.scrollHeight,
         behavior: 'smooth',
       })
-      condition = messages[+conversationId]?.find(
+      condition = messages[conversationId as string]?.find(
         (msg) => msg.id == data?.targetMessageId
       )
       // if (!condition?.id)
@@ -106,32 +111,30 @@ export default function Message({
     <div
       key={data.id}
       id={`msg_${data.id}`}
-      className={`msg flex items-end gap-4 [&:has([data-state=open])_.actions]:visible [&:hover_.actions]:visible ${
+      className={`msg flex items-end gap-4 [&:has([data-state=open])_.actions]:visible [&:hover_.actions]:visible mb-3 ${
         isMine ? 'flex-row-reverse justify-start' : ''
       }`}
     >
       <div>
         {hideInfo ? (
-          <div></div>
+          <div className={cn(isMine ? '' : 'size-10')}></div>
         ) : (
           !isMine && (
             <Avatar
-              className="size-8 border-none"
-              src={generateMediaLink(sender.chatMember.user.avatar)}
+              className="border-none"
+              src={generateMediaLink(sender.chatMember.user.avatarFileId)}
             ></Avatar>
           )
         )}
       </div>
-      <div className="relative mb-4 min-w-[250px] max-w-[70%] lg:max-w-[400px]">
+      <div className="relative min-w-[250px] max-w-[70%] lg:max-w-[400px]">
         {data?.targetMessageId && (
           <div
             // href={`#msg_${data?.targetMessageId}`}
             onClick={handleScrollToMessage}
             className={`${
-              isMine
-                ? 'ml-auto bg-background-background-high'
-                : 'mr-auto bg-background-background-mid'
-            } line-clamp-1 w-fit translate-y-4 cursor-pointer rounded-2xl px-4 py-2 pb-5`}
+              isMine ? 'mr-auto' : 'ml-auto'
+            } bg-default-50 w-full line-clamp-1 w-fit translate-y-4 cursor-pointer rounded-2xl px-4 py-2 pb-5`}
           >
             <div
               className="html-content my-2 line-clamp-1 whitespace-pre-line break-words text-xs opacity-75 md:text-sm"

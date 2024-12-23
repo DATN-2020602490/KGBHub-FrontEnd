@@ -57,7 +57,7 @@ export default function ConversationBox() {
               'relative z-10 flex h-[calc(100dvh-170px)] flex-col-reverse overflow-auto px-4 lg:px-0',
               targetMessageId
                 ? 'h-[calc(100dvh-232px)] lg:h-[calc(100dvh-224px)]'
-                : 'h-[calc(100dvh-170px)] lg:h-[calc(100dvh-160px)]'
+                : 'h-[calc(100dvh-170px)] lg:h-[calc(100dvh-224px)]'
             )}
           >
             {messages[conversationId] ? (

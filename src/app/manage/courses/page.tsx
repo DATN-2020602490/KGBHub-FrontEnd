@@ -20,7 +20,6 @@ const MyCoursePage = ({ searchParams }: Props) => {
     `limit=${LIMIT}&offset=${offset}`
   )
   if (isLoading) return null
-  const listCourses: any = data.payload
   return (
     <>
       <div className="flex items-center justify-between">
@@ -34,7 +33,7 @@ const MyCoursePage = ({ searchParams }: Props) => {
         ))}
       </div> */}
 
-      {isLoading ? null : <ManageCourseTable data={listCourses.courses} />}
+      {isLoading ? null : <ManageCourseTable data={data?.payload} />}
     </>
   )
 }

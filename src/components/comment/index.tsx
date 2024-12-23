@@ -24,7 +24,7 @@ const CommentSection = ({ postId }: Props) => {
   //     new Date(b.createdAt as string).getTime() -
   //     new Date(a.createdAt as string).getTime()
   // )
-  const comments = data!.payload.comments
+  const comments = data!.payload
   const parentComments = comments.filter((comment) => comment.level === 0)
   return (
     <div>

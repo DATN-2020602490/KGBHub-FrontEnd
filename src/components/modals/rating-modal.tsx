@@ -17,9 +17,10 @@ import { toast } from 'react-toastify'
 
 type Props = {
   data?: any
+  disabled?: boolean
 }
 
-const RatingModal = ({ data }: Props) => {
+const RatingModal = ({ data, disabled = false }: Props) => {
   const { courseId } = useParams()
   const { refresh } = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -52,6 +53,7 @@ const RatingModal = ({ data }: Props) => {
         onClick={onOpen}
         color="warning"
         className="w-full mt-2 text-white"
+        disabled={disabled}
       >
         Rating Course
       </Button>

@@ -1,5 +1,4 @@
 'use client'
-
 import { useBookmarks } from '@/contexts/bookmarks'
 import { BookmarkApiRequest } from '@/services/bookmark.service'
 import {
@@ -11,9 +10,8 @@ import {
   TableRow,
   Tooltip,
 } from '@nextui-org/react'
-import { Eye, Trash, View } from 'lucide-react'
+import { Eye, Trash } from 'lucide-react'
 import Link from 'next/link'
-import React from 'react'
 import { toast } from 'react-toastify'
 
 const BookmarksPage = () => {

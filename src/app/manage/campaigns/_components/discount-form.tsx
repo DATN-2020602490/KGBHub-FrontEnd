@@ -1,3 +1,5 @@
+'use client'
+
 import FileUpload from '@/components/input/file-upload'
 import { CampaignType } from '@/constants'
 import {
@@ -43,13 +45,13 @@ export default function DiscountForm({ data, onSubmit }: Props) {
       cover: data?.coverFileId ?? '',
       startAt: data?.startAt ?? '',
       endAt: data?.endAt ?? '',
-      requireJoined: data?.requireJoined ?? "true",
+      requireJoined: data?.requireJoined ?? 'true',
     },
   })
 
   const submit = async (values: any) => {
     setLoading(true)
-    values.type= CampaignType.DISCOUNT
+    values.type = CampaignType.DISCOUNT
     const formData = convertObjectToFormData(values)
     await onSubmit(formData)
     setLoading(false)
@@ -177,7 +179,7 @@ export default function DiscountForm({ data, onSubmit }: Props) {
 const DiscounSetting = () => {
   const { data } = useListCoursePublic()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  const courses = data?.payload.courses
+  const courses = data?.payload
   return (
     <>
       <Button onPress={onOpen}>Open Modal</Button>

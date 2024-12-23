@@ -8,6 +8,7 @@ import AccountProvider from '@/contexts/account'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ChatProvider } from '@/contexts/chat'
+import { ToastContainer } from 'react-toastify'
 interface IContext {
   initializing: boolean
 }
@@ -35,6 +36,7 @@ export default function RootProvider({
         initializing,
       }}
     >
+      <ToastContainer theme="dark" hideProgressBar position="bottom-right" />
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
         <NextUIProvider navigate={router.push}>

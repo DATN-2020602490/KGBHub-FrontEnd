@@ -16,5 +16,5 @@ export const cartApiRequest = {
   clear: () => http.post('-public/carts/actions/clear', {}),
 
   checkout: (courseIds: string[]) =>
-    http.post('-public/carts/actions/checkout', { courseIds }),
+    http.post('/stripe/checkout-from-cart', { courseIds }),
 }

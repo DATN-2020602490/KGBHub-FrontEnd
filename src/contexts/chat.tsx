@@ -81,9 +81,12 @@ function ChatProvider({ children }: { children: React.ReactNode }) {
   }, [isSavedMessageRoute, chatList, conversationIdParam])
   useEffect(() => {
     if (isLoggedIn && !socket.current) {
-      socket.current = io(`https://kgb-api.harmoury.space/chats`, {
-        transports: ['websocket'],
-      })
+      socket.current = io(
+        `${process.env.NEXT_PUBLIC_API_BASE?.replaceAll('api/v1', 'chats')}`,
+        {
+          transports: ['websocket'],
+        }
+      )
       socket.current.emit('login', {
         accessToken: localStorage.getItem('accessToken'),
       })
@@ -152,8 +155,8 @@ function ChatProvider({ children }: { children: React.ReactNode }) {
           (firstTime && !messages[conversationId as string]?.length) ||
           !firstTime
         ) {
-          const data = res?.payload?.messages || []
-          const id = res?.payload?.chat.id
+          const data = res?.payload || []
+          const id = res?.option?.chat.id
           setMessages((prevState) => {
             const newState = { ...prevState }
             if (newState[id]) {
@@ -167,7 +170,7 @@ function ChatProvider({ children }: { children: React.ReactNode }) {
             return newState
           })
         }
-        // setRemaining(res?.data?.remaining)
+        setRemaining(res?.pagination?.page < res?.pagination?.totalPages)
       }
     } catch (error) {
       toast.error('Could not fetch messages')

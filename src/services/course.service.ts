@@ -14,7 +14,7 @@ export type BuyCourseBodyType = {
   code?: string
 }
 
-export const courseManagerApiRequests: any = {
+export const courseManagerApiRequests = {
   create: () => http.post('/courses', undefined),
 
   get: (id: string) =>
@@ -23,35 +23,35 @@ export const courseManagerApiRequests: any = {
     }),
 
   getList: (params?: string) =>
-    http.get(`/courses?${params}`, {
+    http.get<Course[]>(`/courses?${params}`, {
       cache: 'no-store',
     }),
 
   update: (courseId: string, body: any) =>
     http.patch(`/courses/${courseId}`, body),
 
-  delete: (courseId: number) => http.delete(`/courses/${courseId}`),
+  delete: (courseId: string) => http.delete(`/courses/${courseId}`),
 
-  createPart: (courseId: number, body: any) =>
+  createPart: (courseId: string, body: any) =>
     http.post(`/courses/${courseId}/parts`, body),
-  getListParts: (courseId: number) => http.get(`/courses/${courseId}/parts`),
+  getListParts: (courseId: string) => http.get(`/courses/${courseId}/parts`),
 
   getPart: (courseId: number, partId: number) =>
     http.get(`/courses/${courseId}/${partId}`),
 
-  updatePart: (courseId: number, partId: number, body: any) =>
+  updatePart: (courseId: string, partId: number, body: any) =>
     http.patch(`/courses/${courseId}/parts/${partId}`, body),
 
-  deletePart: (courseId: number, partId: number) =>
+  deletePart: (courseId: string, partId: number) =>
     http.delete(`/courses/${courseId}/${partId}`),
 
-  approve: (courseId: number) =>
+  approve: (courseId: string) =>
     http.patch(`/courses/${courseId}/actions/approve`, undefined),
 }
 
 export const coursePublicApiRequests = {
   getList: (params: string = '') =>
-    http.get<{ courses: Course[] }>(`-public/courses` + params, {
+    http.get<Course[]>(`-public/courses` + params, {
       cache: 'no-store',
     }),
 
@@ -66,7 +66,7 @@ export const coursePublicApiRequests = {
   buy: (body: BuyCourseBodyType) => http.post('/stripe/buy-course', body),
 
   toogleHeart: (courseId: string) =>
-    http.post('/interacts/hearts', { id:courseId, target_resource: 'course' }),
+    http.post('/interacts/hearts', { id: courseId, target_resource: 'course' }),
 
   rating: (body: RatingBodyType) =>
     http.post('-public/courses/actions/rate', body),

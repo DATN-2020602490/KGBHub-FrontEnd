@@ -1,7 +1,11 @@
+'use client'
+
 import { cn } from '@/lib/utils'
+import { userApiRequest } from '@/services/user.service'
 import { Button } from '@nextui-org/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useState, useEffect, useCallback } from 'react'
 import { useWindowSize } from 'usehooks-ts'
 
 const Intro = () => {
@@ -102,54 +106,108 @@ const RectangleRounded = ({
   )
 }
 
+const TypeWriter = ({ text, className }: { text: any; className: any }) => {
+  const [displayedText, setDisplayedText] = useState('')
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  useEffect(() => {
+    setDisplayedText('')
+    setCurrentIndex(0)
+  }, [text])
+
+  useEffect(() => {
+    if (currentIndex < text.length) {
+      const timeoutId = setTimeout(() => {
+        setDisplayedText((prev) => prev + text[currentIndex])
+        setCurrentIndex((prev) => prev + 1)
+      }, 50)
+
+      return () => clearTimeout(timeoutId)
+    }
+  }, [currentIndex, text])
+
+  return <span className={className}>{displayedText}</span>
+}
+
+const getDynamicFontSize = (quoteLength: any) => {
+  if (quoteLength <= 50) {
+    return 'text-4xl md:text-5xl lg:text-6xl'
+  } else if (quoteLength <= 100) {
+    return 'text-3xl md:text-4xl lg:text-5xl'
+  } else if (quoteLength <= 150) {
+    return 'text-2xl md:text-3xl lg:text-4xl'
+  } else {
+    return 'text-xl md:text-2xl lg:text-3xl'
+  }
+}
+
 const PosterWithAnimation = () => {
+  const [quoteData, setQuoteData] = useState({
+    quote:
+      'Two roads diverged in a wood, and I—I took the one less traveled by, And that has made all the difference.',
+    author: 'Robert Frost',
+  })
+  const [alignment, setAlignment] = useState('text-left')
+  const [fontSize, setFontSize] = useState('text-4xl')
+  const updateFontSize = useCallback(() => {
+    const newFontSize = getDynamicFontSize(quoteData.quote.length)
+    setFontSize(newFontSize)
+  }, [quoteData.quote])
+  const fetchNewQuote = async () => {
+    try {
+      const response = await userApiRequest.randomQuote()
+      const data = response.payload
+      setQuoteData(data)
+      setAlignment(Math.random() > 0.5 ? 'text-left' : 'text-right')
+    } catch (error) {
+      console.error('Error fetching quote:', error)
+    }
+  }
+  useEffect(() => {
+    updateFontSize()
+  }, [quoteData, updateFontSize])
+
+  useEffect(() => {
+    fetchNewQuote()
+    const intervalId = setInterval(fetchNewQuote, 15000)
+    return () => clearInterval(intervalId)
+  }, [])
+
   return (
-    <div className="sm:w-1/3 max-sm:scale-[0.6]">
+    <div className="sm:w-1/3">
       <div className="flex justify-center items-center relative">
-        <Image
-          src="/images/rocket.png"
-          alt=""
-          width={0}
-          height={0}
-          sizes="100%"
-          className="absolute w-80 object-cover -top-[30%] -left-[30%] animate-floating-y-slow select-none"
-        />
-        <Image
-          src="/images/model.png"
-          alt=""
-          width={0}
-          height={0}
-          sizes="100%"
-          className="size-96 object-cover select-none aspect-square"
-        />
-        <Image
-          src="/images/cup.png"
-          alt=""
-          width={0}
-          height={0}
-          sizes="100%"
-          className="absolute w-60 object-cover -bottom-[30%] -right-[10%] animate-floating-x-slow select-none"
-        />
-        <RectangleRounded
-          withBorder={false}
-          className="bottom-0 left-0 animate-floating-y-slow"
-        />
-        <RectangleRounded
-          size={32}
-          color="bg-[#F0C932]"
-          withBorder={false}
-          className="-top-[10%] left-[40%] animate-floating-x-slow"
-        />
-        <RectangleRounded
-          size={64}
-          color="bg-[#7253A4]"
-          className="top-[10%] right-[10%] animate-floating-y-slow"
-        />
-        <RectangleRounded
-          size={92}
-          color="bg-orange-500"
-          className="-bottom-[30%] left-[30%] animate-floating-x-slow"
-        />
+        <div className="relative rounded-2xl overflow-hidden">
+          <Image
+            src="/images/work.jpg"
+            alt="Work"
+            width={736}
+            height={920}
+            className="max-md:w-96 md:w-full object-cover select-none rounded-2xl"
+          />
+          <div className="absolute inset-0 bg-card/50 flex flex-col justify-center p-8 rounded-2xl">
+            <div
+              className={`h-[40%] flex flex-col justify-center ${alignment} font-serif`}
+            >
+              <div className="max-w-[90%] mx-auto">
+                <p
+                  className={`text-white ${fontSize} md:text-4xl lg:text-5xl mb-6 leading-relaxed uppercase`}
+                >
+                  <TypeWriter
+                    text={quoteData.quote}
+                    className="transition-all duration-300"
+                  />
+                </p>
+                <p className="text-white text-xl md:text-2xl lg:text-3xl italic uppercase">
+                  -{' '}
+                  <TypeWriter
+                    text={quoteData.author}
+                    className="transition-all duration-300"
+                  />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

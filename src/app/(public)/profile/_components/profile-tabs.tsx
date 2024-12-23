@@ -27,7 +27,7 @@ const ProfileTabs = ({ data }: Props) => {
     const fetchCoursesOwn = async () => {
       try {
         const res = await coursePublicApiRequests.getList(
-          `?byAuthor=${data.id}&myOwn=${isMe}`
+          `?byAuthor=${data.id}`
         )
         if (res.status === 200) setCoursesByAuthor(res.payload)
       } catch (error) {}

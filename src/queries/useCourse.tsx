@@ -8,14 +8,14 @@ import QUERY_KEYS from '@/constants/query-keys'
 
 export const useListCoursePublic = (params?: string) => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_LIST_COURSES_PUBLIC],
+    queryKey: [QUERY_KEYS.GET_LIST_COURSES_PUBLIC, params],
     queryFn: () => coursePublicApiRequests.getList(params),
   })
 }
 
 export const useListCourseManager = (params?: string) => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_LIST_COURSES_MANAGER],
+    queryKey: [QUERY_KEYS.GET_LIST_COURSES_MANAGER, params],
     queryFn: () => courseManagerApiRequests.getList(params),
   })
 }

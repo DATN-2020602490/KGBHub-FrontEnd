@@ -1,3 +1,5 @@
+'use client'
+
 import TextLessonForm from '@/components/lesson/text-lesson-form'
 import VideoLessonForm from '@/components/lesson/video-lesson-form'
 import {
@@ -46,7 +48,7 @@ const ApprovesLessonsTable = () => {
         <TableColumn>ACTIONS</TableColumn>
       </TableHeader>
       <TableBody emptyContent={'No pending request'}>
-        {data.payload.lessons.map((lesson: any, index: number) => (
+        {(data?.payload || []).map((lesson: any, index: number) => (
           <TableRow key={index}>
             <TableCell>
               <span className="line-clamp-2">{lesson.lessonName}</span>

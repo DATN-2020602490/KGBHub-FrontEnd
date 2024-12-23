@@ -13,7 +13,7 @@ export const CourseBody = z.object({
 export type CourseBodyType = z.infer<typeof CourseBody>
 
 // export const CourseRes = z.object({
-//   id: z.number(),
+//   id: z.string(),
 //   timestamp: z.string(),
 //   totalLesson: z.number(),
 //   totalPart: z.number(),
@@ -29,7 +29,7 @@ export type CourseBodyType = z.infer<typeof CourseBody>
 //   priceId: z.string(),
 //   productId: z.string(),
 //   descriptionMD: z.string(),
-//   userId: z.number(),
+//   userId: z.string(),
 //   coursedPaid: z.array(z.any()),
 //   comments: z.array(z.any()),
 //   hearts: z.array(z.any()),
@@ -41,7 +41,7 @@ export type CourseBodyType = z.infer<typeof CourseBody>
 export const CourseRes = z.object({
   courses: z.array(
     z.object({
-      id: z.number(),
+      id: z.string(),
       timestamp: z.string(),
       totalLesson: z.number(),
       totalPart: z.number(),
@@ -58,10 +58,10 @@ export const CourseRes = z.object({
       priceId: z.string(),
       productId: z.string(),
       descriptionMD: z.string(),
-      userId: z.number(),
+      userId: z.string(),
       rating: z.array(z.unknown()),
       user: z.object({
-        id: z.number(),
+        id: z.string(),
         firstName: z.string(),
         lastName: z.null(),
         email: z.string(),
@@ -74,15 +74,15 @@ export const CourseRes = z.object({
       certificates: z.array(z.unknown()),
       parts: z.array(
         z.object({
-          id: z.number(),
+          id: z.string(),
           timestamp: z.string(),
           partNumber: z.number(),
           partName: z.string(),
           description: z.string(),
-          courseId: z.number(),
+          courseId: z.string(),
           lessons: z.array(
             z.object({
-              id: z.number(),
+              id: z.string(),
               timestamp: z.string(),
               lessonName: z.string(),
               lessonNumber: z.number(),
@@ -95,9 +95,9 @@ export const CourseRes = z.object({
               localPath: z.string(),
               thumbnailPath: z.string(),
               filename: z.string(),
-              courseId: z.number(),
-              userId: z.number(),
-              partId: z.number(),
+              courseId: z.string(),
+              userId: z.string(),
+              partId: z.string(),
               comments: z.array(z.unknown()),
               hearts: z.array(z.unknown()),
               emojis: z.array(z.unknown()),
@@ -122,7 +122,6 @@ export type GetCoursesPublicParamsType = {
   orderBy?: string
   direction?: string
   isBestSeller?: boolean
-  myOwn?: boolean
   byAuthor?: number
 }
 

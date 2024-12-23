@@ -23,22 +23,26 @@ const CoursesTab = ({ profile }: Props) => {
     const fetchCoursesOwn = async () => {
       try {
         const res = await coursePublicApiRequests.getList(
-          `?byAuthor=${profile.id}&myOwn=${isMe}`
+          `?byAuthor=${profile.id}`
         )
-        if (res.status === 200) setCourses(res.payload.courses)
+        if (res.status === 200) setCourses(res.payload)
       } catch (error) {}
     }
     async function fetchCoursesBought() {
       try {
         const res = await userApiRequest.getCourseBought()
         if (res.status === 200) {
-          const result = (res.payload as any).map((item: any) => item.course)
-          setCourses(result)
+          setCourses(res.payload)
         }
       } catch (error) {}
     }
-    if (isInstructor) fetchCoursesOwn()
-    else fetchCoursesBought()
+    if (isMe) {
+      fetchCoursesBought()
+    } else if (!isMe && isInstructor) {
+      fetchCoursesOwn()
+    } else {
+      setCourses([])
+    }
   }, [])
   // useEffect(() => {
   //   ;(async function () {

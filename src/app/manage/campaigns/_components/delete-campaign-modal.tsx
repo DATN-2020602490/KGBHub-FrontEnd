@@ -1,3 +1,5 @@
+'use client'
+
 import { DeleteIcon } from '@/components/icons/table/delete-icon'
 import {
   Button,

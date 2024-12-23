@@ -8,7 +8,7 @@ export const EmojiBody = z.object({
 export type EmojiBodyType = z.infer<typeof EmojiBody>
 
 export const EmojiRes = z.object({
-  id: z.number(),
+  id: z.string(),
   name: z.string(),
   emojiHandle: z.string(),
 })

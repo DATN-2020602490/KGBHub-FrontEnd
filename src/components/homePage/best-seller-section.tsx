@@ -1,3 +1,5 @@
+'use client'
+
 import CourseCard, { CourseCardSkeleton } from '@/components/course/course-card'
 import NavigationSwiper from '@/components/navigation-swiper'
 import { useListCoursePublic } from '@/queries/useCourse'
@@ -6,7 +8,8 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 const BestSellerSection = () => {
   const { data, isLoading } = useListCoursePublic('?isBestSeller=true&limit=8')
-  const bestSellers = data?.payload?.courses
+  const bestSellers = data?.payload
+  console.log(data)
   return (
     <div className="slider-cards relative">
       <Swiper

@@ -1,5 +1,4 @@
 import CourseCard from '@/components/course/course-card'
-import SearchCourse from '@/components/search/search-course'
 import { CATEGORIES } from '@/lib/constants'
 import { coursePublicApiRequests } from '@/services/course.service'
 
@@ -28,7 +27,7 @@ const CoursesByCategory = async ({ params }: Props) => {
         <p className="text-center">{header?.description}</p>
       </div>
       <div className="grid grid-cols-4 gap-4">
-        {payload.courses.map((course: any) => (
+        {payload.map((course: any) => (
           <CourseCard key={course.id} data={course} />
         ))}
       </div>

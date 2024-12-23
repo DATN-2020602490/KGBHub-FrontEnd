@@ -23,10 +23,7 @@ export default function Page() {
   const createConversationHandler = async () => {
     try {
       const res = await createConversationMutation.mutateAsync({
-        userIds: [
-          user?.id,
-          ...selectedUsers.map((user) => user.id).concat(user?.id),
-        ],
+        userIds: selectedUsers.map((user) => user.id).concat(user?.id),
       })
       if (res?.payload?.id) {
         if (selectedUsers[0].id == user?.id) {
@@ -66,6 +63,7 @@ export default function Page() {
             mainWrapper: 'w-full',
           }}
           onChange={_.debounce((e) => setSearch(e.target.value), 500)}
+          onClear={() => setSearch('')}
           placeholder="Search names or user ID"
         />
 

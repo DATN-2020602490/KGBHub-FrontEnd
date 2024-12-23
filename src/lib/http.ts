@@ -1,4 +1,5 @@
 import { normalizePath } from '@/lib/utils'
+import { Pagination } from '@/models'
 import { LoginResponseType } from '@/schemaValidations/auth.schema'
 import { redirect } from 'next/navigation'
 
@@ -56,7 +57,7 @@ export class EntityError extends HttpError {
 
 let clientLogoutRequest: null | Promise<any> = null
 const isClient = typeof window !== 'undefined'
-const request = async <Response>(
+const request = async <Response, Option = undefined>(
   method: 'GET' | 'POST' | 'PATCH' | 'DELETE',
   url: string,
   options?: CustomOptions | undefined
@@ -99,10 +100,12 @@ const request = async <Response>(
     body,
     method,
   })
-  const payload: Response = await res.json()
+  const payload = await res.json()
   const data = {
     status: res.status,
-    payload,
+    payload: payload.data as Response,
+    pagination: payload?.pagination as Pagination,
+    option: payload?.option as Option,
   }
   // Interceptor là nời chúng ta xử lý request và response trước khi trả về cho phía component
   if (!res.ok) {
@@ -162,11 +165,11 @@ const request = async <Response>(
 }
 
 const http = {
-  get<Response>(
+  get<Response, Option = undefined>(
     url: string,
     options?: Omit<CustomOptions, 'body'> | undefined
   ) {
-    return request<Response>('GET', url, options)
+    return request<Response, Option>('GET', url, options)
   },
   post<Response>(
     url: string,

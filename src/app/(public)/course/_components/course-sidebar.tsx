@@ -2,7 +2,6 @@
 import { Course } from '@/models'
 import { useAccountContext } from '@/contexts/account'
 import { formatDuration, generateMediaLink } from '@/lib/utils'
-import { coursePublicApiRequests } from '@/services/course.service'
 import { Button, Divider } from '@nextui-org/react'
 import { Clock, FileBadge, FolderOpen } from 'lucide-react'
 import Image from 'next/image'
@@ -10,7 +9,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
 import { useBuyCourseMutation } from '@/queries/useCourse'
-import { OrderStatus } from '@/constants'
 import {
   useAddToCartMutation,
   useMyCart,
@@ -30,13 +28,21 @@ const CourseSidebar = ({ data }: Props) => {
   const removeToCartMutation = useRemoveToCartMutation()
   const buyCourseMutation = useBuyCourseMutation()
   const { refresh } = useRouter()
-  const { courseName, priceAmount, id, parts, thumbnailFileId, isBought, isHearted } = data
+  const {
+    courseName,
+    priceAmount,
+    id,
+    parts,
+    thumbnailFileId,
+    isBought,
+    isHearted,
+  } = data
   const { user } = useAccountContext()
   const isAuth = !!user?.email
-  
+
   // const isHearted =
   //   coursesHearted.length > 0
-  //     ? coursesHearted?.some((item: any) => item.courseId === Number(id))
+  //     ? coursesHearted?.some((item: any) => item.courseId === (id))
   //     : false
   // const isBought = data?.coursesPaid?.some(
   //   (item) =>
@@ -52,7 +58,10 @@ const CourseSidebar = ({ data }: Props) => {
         toast.error('You need to login to heart course')
         return
       }
-      const res = await interactApiRequest.heart({id, target_resource:"course"})
+      const res = await interactApiRequest.heart({
+        id,
+        target_resource: 'course',
+      })
       if (res.status === 200) {
         refresh()
       }
@@ -109,7 +118,7 @@ const CourseSidebar = ({ data }: Props) => {
   }
 
   return (
-    <div className="flex-1 p-3 lg:-mt-28 ml-4 border rounded-lg bg-background h-fit space-y-2 sticky top-24">
+    <div className="flex-1 p-3 lg:-mt-28 ml-4 border rounded-lg bg-background h-fit space-y-2 lg:sticky top-24">
       <Image
         src={generateMediaLink(thumbnailFileId)}
         alt={courseName}

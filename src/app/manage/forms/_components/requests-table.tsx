@@ -48,7 +48,7 @@ const RequestsTable = ({ data }: Props) => {
             <TableCell>
               <div className="flex items-center gap-2">
                 <Avatar
-                  src={generateMediaLink(form.selfie)}
+                  src={generateMediaLink(form.selfieFileId)}
                   name={displayFullname(
                     form.real_firstName,
                     form.real_lastName

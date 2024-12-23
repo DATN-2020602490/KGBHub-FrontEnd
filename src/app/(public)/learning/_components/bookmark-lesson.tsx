@@ -5,7 +5,6 @@ import { BookmarkApiRequest } from '@/services/bookmark.service'
 import { Button, Tooltip } from '@nextui-org/react'
 import { Bookmark } from 'lucide-react'
 import { useParams, useSearchParams } from 'next/navigation'
-import React from 'react'
 import { toast } from 'react-toastify'
 
 const BookmarkLesson = () => {
@@ -23,7 +22,7 @@ const BookmarkLesson = () => {
       )?.id
       const res = isBookmarked
         ? await BookmarkApiRequest.delete(bookmarkId)
-        : await BookmarkApiRequest.create({ lessonId: Number(lessonId) })
+        : await BookmarkApiRequest.create({ lessonId: lessonId })
       if (res.status === 200) {
         toast.success(
           isBookmarked
@@ -42,7 +41,7 @@ const BookmarkLesson = () => {
           className={cn(
             'stroke-yellow-500',
             bookmarks?.some(
-              (bookmark: any) => bookmark.lessonId === Number(lessonId)
+              (bookmark: any) => bookmark?.lessonId === Number(lessonId)
             ) && 'fill-yellow-400'
           )}
         />

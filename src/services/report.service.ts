@@ -14,5 +14,6 @@ export const reportApiRequest = {
 
   getSystem: (params?: string) =>
     http.get<ReportTable>('/reports/system?' + params),
-  getAuthor: (id: string) => http.get<ReportTable>(`/reports/author/${id}`),
+  getAuthor: (params?: string) =>
+    http.get<ReportTable>(`/reports/author?${params}`),
 }

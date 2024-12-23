@@ -75,7 +75,7 @@ const ListPartsAccordion = ({ data, isAuth = false }: Props) => {
   const editPartNumber = async (values: any) => {
     try {
       const res = await courseManagerApiRequests.updatePart(
-        Number(courseId),
+        courseId as string,
         Number((partData as any).id),
         values
       )
@@ -85,14 +85,6 @@ const ListPartsAccordion = ({ data, isAuth = false }: Props) => {
       }
     } catch (error) {}
   }
-  const maxLessonNumber =
-    courseProgress?.lessons?.length > 0
-      ? Math.max(
-          ...courseProgress?.lessons.map(
-            (lesson: any) => lesson.lesson.lessonNumber
-          )
-        )
-      : 0
   return (
     <>
       {isAuth && (

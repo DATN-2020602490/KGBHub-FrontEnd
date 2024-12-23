@@ -17,7 +17,7 @@ const LearningDocumentLesson = ({ data }: Props) => {
   const { courseId } = useParams()
   const { setCourseRefresh, progress } = useCourse()
   const courseProgress = progress?.find(
-    (course: any) => course.courseId === Number(courseId)
+    (course: any) => course.courseId === (courseId)
   )
 
   useEffect(() => {

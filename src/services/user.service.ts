@@ -1,16 +1,16 @@
 import http from '@/lib/http'
-import { Order, User } from '@/models'
+import { Course, Order, SubmitForm, User } from '@/models'
 
 export const userApiRequest = {
-  getList: (params: string, access_token: string) =>
-    http.get<any>(`/users?${params}`, {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
+  getList: (params: string) =>
+    http.get<User[]>(`/users?${params}`, {
       cache: 'no-store',
     }),
 
   get: (userId: string) => http.get<User>(`/users/${userId}`),
+
+  randomQuote: () =>
+    http.get<{ quote: string; author: string }>(`/users/random-quote`),
 
   verifyUser: (verifyCode: string) =>
     http.post<User>('/users/verify', { verifyCode }),
@@ -26,15 +26,12 @@ export const userApiRequest = {
 
   getCourseProgress: () => http.get('/users/actions/progress'),
 
-  getCourseBought: () => http.get('/users/actions/bought'),
+  getCourseBought: () => http.get<Course[]>('/users/actions/bought'),
 
   getWishList: () => http.get('/users/actions/hearted', { cache: 'no-store' }),
 
-  getForm: (access_token: string) =>
-    http.get('/users/actions/forms', {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
+  getForm: () =>
+    http.get<SubmitForm[]>('/users/actions/forms', {
       cache: 'no-store',
     }),
 
@@ -43,22 +40,14 @@ export const userApiRequest = {
   search: (keyword: string) =>
     http.get<User[]>(`/users/actions/user-search/${keyword}`),
 
+  searchAuthor: (keyword: string) =>
+    http.get<User[]>(`/users/actions/author-search/${keyword}`),
 
-  getOrderDetail: ({
-    id
-  }: {
-    id: string
-  }) => {
+  getOrderDetail: ({ id }: { id: string }) => {
     return http.get<Order>(`/stripe/orders/${id}`)
   },
 
-  getOrders: ({
-    limit,
-    offset,
-  }: {
-    limit?: number
-    offset?: number
-  }) => {
+  getOrders: ({ limit, offset }: { limit?: number; offset?: number }) => {
     const user = JSON.parse(localStorage.getItem('user') || '{}')
     const queryParams = new URLSearchParams({
       userId: user.id,

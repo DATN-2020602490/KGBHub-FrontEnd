@@ -1,3 +1,5 @@
+'use client'
+
 import CourseForm from '@/components/course/course-form'
 import { generateMediaLink } from '@/lib/utils'
 import { CourseStatus } from '@/constants'
@@ -52,16 +54,12 @@ const ApprovesCoursesTable = () => {
         <TableColumn>ACTIONS</TableColumn>
       </TableHeader>
       <TableBody emptyContent={'No pending request'}>
-        {data.payload.courses.map((course: any, index: number) => (
+        {(data?.payload || []).map((course: any, index: number) => (
           <TableRow key={index}>
             <TableCell>
               <div className="flex items-center gap-2 w-fit">
                 <Image
-                  src={
-                    course.thumbnail
-                      ? generateMediaLink(course.thumbnail)
-                      : 'https://www.filepicker.io/api/file/nlMKa4JeSBysXoj7pa90'
-                  }
+                  src={generateMediaLink(course.thumbnail ?? '0.jpg')}
                   alt={course.courseName}
                   width={400}
                   height={400}

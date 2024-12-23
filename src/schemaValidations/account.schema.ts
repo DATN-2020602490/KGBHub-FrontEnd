@@ -17,7 +17,7 @@ export const AccountRes = z.object({
   accessToken: z.string(),
   refreshToken: z.string(),
   user: z.object({
-    id: z.number(),
+    id: z.string(),
     email: z.string(),
     username: z.string(),
     firstName: z.string(),
@@ -37,12 +37,12 @@ export const AccountRes = z.object({
     timestamp: z.string(),
     roles: z.array(
       z.object({
-        id: z.number(),
+        id: z.string(),
         timestamp: z.string(),
-        roleId: z.number(),
-        userId: z.number(),
+        roleId: z.string(),
+        userId: z.string(),
         role: z.object({
-          id: z.number(),
+          id: z.string(),
           name: z.string(),
           description: z.string(),
         }),

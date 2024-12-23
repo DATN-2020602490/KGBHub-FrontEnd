@@ -9,6 +9,7 @@ import { ThemeSwitcher } from '@/components/theme-swicher'
 import { useAccountContext } from '@/contexts/account'
 import { useChatContext } from '@/contexts/chat'
 import { CATEGORIES } from '@/lib/constants'
+import { cn } from '@/lib/utils'
 import {
   Badge,
   Button,
@@ -42,7 +43,7 @@ const menuItems = [
   'Log Out',
 ]
 
-const Header = () => {
+const Header = ({ className }: { className?: string }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { user } = useAccountContext()
   const { width } = useWindowSize()
@@ -61,7 +62,7 @@ const Header = () => {
       isBordered
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
-      className="lg:[&>header]:max-w-full lg:[&>header]:px-40"
+      className={cn('lg:[&>header]:max-w-full lg:[&>header]:px-40', className)}
     >
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle
@@ -126,14 +127,7 @@ const Header = () => {
         </NavbarItem> */}
         {isManager && (
           <NavbarItem>
-            <Link
-              color="foreground"
-              href={
-                user?.roles.some((role) => role.role.name === 'ADMIN')
-                  ? '/manage/dashboard'
-                  : '/manage/courses'
-              }
-            >
+            <Link color="foreground" href="/manage/dashboard">
               Dashboard
             </Link>
           </NavbarItem>
@@ -148,7 +142,12 @@ const Header = () => {
 
         {/* {user && <ListChatsPopover />} */}
         {user && (
-          <Badge color="danger" content={unreadMessageCount} shape="circle">
+          <Badge
+            color="danger"
+            content={unreadMessageCount}
+            isInvisible={!unreadMessageCount}
+            shape="circle"
+          >
             <Link href="/messages">
               <ChatIcon className="size-6" />
             </Link>

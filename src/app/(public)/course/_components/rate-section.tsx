@@ -9,12 +9,18 @@ import { format } from 'date-fns'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 
-export default function RateSection({ myRate }: { myRate?: Rating }) {
+export default function RateSection({
+  myRate,
+  canRate = false,
+}: {
+  myRate?: Rating
+  canRate?: boolean
+}) {
   const { courseId } = useParams()
   const { data } = useListRates({ courseId: courseId as string })
-  const genaralRates = data?.payload?.general
-  const rates = data?.payload?.rates
-  const avgRate = data?.payload?.avgRate
+  const genaralRates = data?.option?.general
+  const rates = data?.payload
+  const avgRate = data?.option?.avgRate
   return (
     <div className="space-y-4">
       <p className="text-2xl font-semibold">Ratings</p>
@@ -25,7 +31,7 @@ export default function RateSection({ myRate }: { myRate?: Rating }) {
             <FiveStars className="mx-auto" starRated={avgRate} />
             <p className="text-nowrap">Course Rating</p>
           </div>
-          <RatingModal data={myRate} />
+          <RatingModal data={myRate} disabled={!canRate} />
         </div>
         <div className="w-full flex flex-col justify-around">
           {Object.entries(genaralRates ?? {}).map(([key, value], index) => (
@@ -35,7 +41,7 @@ export default function RateSection({ myRate }: { myRate?: Rating }) {
                 classNames={{
                   indicator: 'bg-yellow-400',
                 }}
-                value={(value / (data?.payload?.totalRated ?? 0)) * 100}
+                value={(value / (data?.pagination?.total ?? 0)) * 100}
                 className=""
               />
               <p>{`(${value})`}</p>

@@ -109,14 +109,13 @@ export default function ChatInput({ taggableList }: { taggableList?: any[] }) {
   const handleChangeFile = (fileList: any) => {
     const files = Array.from(fileList) as any[]
     setMessageTemplates([])
-    if (files.some((file) => file.size > 5 * 1024 * 1024)) {
-      toast.warn('There are some files that are over 5MB. Please try again.')
+    console.log(files)
+    if (files.some((file) => file.size > 1024 * 1024 * 1024)) {
+      toast.warning('There are some files that are over 1GB. Please try again.')
       return
     }
-    if (selectedFilesRef.current.length >= 10) {
-      toast.warning(
-        'Please remove or send other attachments in another message'
-      )
+    if (selectedFilesRef.current.length >= 1024 * 1024 * 1024) {
+      toast.warn('Please remove or send other attachments in another message')
       return
     }
     selectedFilesRef.current = [

@@ -12,8 +12,7 @@ export const lessonManagerApiRequest = {
 
   get: (lessonId: string) => http.get(`/lessons/${lessonId}`),
 
-  getList: (params?: string) =>
-    http.get<{ lessons: Lesson[] }>(`/lessons?${params}`),
+  getList: (params?: string) => http.get<Lesson[]>(`/lessons?${params}`),
 
   update: (lessonId: string, body: LessonBodyType) =>
     http.patch(`/lessons/${lessonId}`, body),

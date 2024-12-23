@@ -95,9 +95,7 @@ const CourseCard = ({
           alt="Card background"
           className="object-cover rounded-md w-full aspect-video [div:has(>&)]:!max-w-full"
           src={
-            thumbnailFileId
-              ? generateMediaLink(thumbnailFileId)
-              : 'https://www.filepicker.io/api/file/nlMKa4JeSBysXoj7pa90'
+            generateMediaLink(thumbnailFileId ?? "0.jpg")
           }
           width={0}
         />
